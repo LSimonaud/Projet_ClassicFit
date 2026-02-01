@@ -10,4 +10,26 @@ package classicfit;
  */
 public class Activite{
     
+    private String nom; //nom de l'activité
+    
+    public Activite(){
+        
+    }
+    
+    @Override
+    public String toString(){
+        return "";
+    }
+    
+    public void lister_activite(){
+        
+    }
+    
+    public void inscription_activite(){
+        
+    }
+    
+    public void desinscription_activite(){
+        
+    }
 }

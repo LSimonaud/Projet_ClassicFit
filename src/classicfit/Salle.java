@@ -12,4 +12,9 @@ public class Salle {
     
     private String nom; //Nom de la salle de sport
     
+    public Salle(String nom){
+        
+    }
+    
+    
 }

@@ -10,4 +10,20 @@ package classicfit;
  */
 public class Cours {
     
+    private String nom; //nom du cours
+    private int nbre_place; //nombre de places du cours
+    private String type_cours; //type de cours (indviduel/collectif)
+            
+    public Cours(){
+        
+    }
+    
+    public String toString(){
+        return "";
+    }
+    
+    public void verification_date(){
+        
+    }
+    
 }

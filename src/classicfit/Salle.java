@@ -31,9 +31,6 @@ public class Salle {
         return;
     }
     
-    public connection(){
-        
-    }
     
     
 }

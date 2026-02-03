@@ -8,14 +8,16 @@ package classicfit;
  *
  * @author lucsi
  */
-public class Administrateur {
+public class Administrateur extends Utilisateur{
     
     private String nom; //nom de l'administrateur
     
-    public Administrateur(){
-        
+    public Administrateur(String email,String mdp,String nom){
+        super(email,mdp);
+        this.nom = nom;
     }
     
+    @Override
     public String toString(){
         return "";
     }

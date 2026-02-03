@@ -4,8 +4,8 @@
  */
 package classicfit;
 
-import java.time.LocalDate;
-import java.util.LinkedList;
+import java.time.LocalDateTime;
+import java.util.TreeSet;
 
 /**
  *
@@ -14,23 +14,36 @@ import java.util.LinkedList;
 public class Salle {
     
     private String nom; //Nom de la salle de sport
-    LinkedList<String> Administrateurs;
-    LinkedList<String> cours;
-    LinkedList<String> client;
-    private LocalDate duree;
-    private String prenom,mdp; //Pour se connecter
+    private Administrateur admin; //Administrateur de la salle
+    private TreeSet<Cours> listeCours; //liste des cours passés et futurs
+    private TreeSet<Client> listeClient; //liste de tous les clients de la salle
     
-    public Salle(String nom){
+    private static final String FICHIER_SAUVEGARDE = "Fichier_de_sauvegarde.txt"; //Fichier de sauvegarde des données
+    
+    public Salle(String nom,Administrateur admin,LocalDateTime duree){
         this.nom = nom;
-        this.duree = duree;
-        this.prenom = prenom;
-        this.mdp = mdp;
+        this.admin = admin;
+        
+        //Initialisation des listes
+        this.listeCours = new TreeSet<>();
+        this.listeClient = new TreeSet<>();
     }
     
-    public void Affichage(){
-        return;
+    @Override
+    public String toString(){
+        return nom;
     }
     
+    public void Connection(){
+        
+    }
     
+    public void Modifier_mdp(){
+        
+    }
     
+    public void Creer_compte(){
+        
+    }
+  
 }

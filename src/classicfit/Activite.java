@@ -12,8 +12,8 @@ public class Activite{
     
     private String nom; //nom de l'activité
     
-    public Activite(){
-        
+    public Activite(String nom){
+        this.nom = nom;
     }
     
     @Override

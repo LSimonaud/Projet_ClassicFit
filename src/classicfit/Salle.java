@@ -4,6 +4,9 @@
  */
 package classicfit;
 
+import java.time.LocalDate;
+import java.util.LinkedList;
+
 /**
  *
  * @author lucsi
@@ -11,8 +14,24 @@ package classicfit;
 public class Salle {
     
     private String nom; //Nom de la salle de sport
+    LinkedList<String> Administrateurs;
+    LinkedList<String> cours;
+    LinkedList<String> client;
+    private LocalDate duree;
+    private String prenom,mdp; //Pour se connecter
     
     public Salle(String nom){
+        this.nom = nom;
+        this.duree = duree;
+        this.prenom = prenom;
+        this.mdp = mdp;
+    }
+    
+    public void Affichage(){
+        return;
+    }
+    
+    public connection(){
         
     }
     

@@ -20,6 +20,6 @@ public class Utilisateur {
 
     @Override
     public String toString() {
-        return email + ", " + mdp;
+        return email + ";" + mdp;
     }
 }

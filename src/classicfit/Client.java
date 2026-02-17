@@ -48,7 +48,7 @@ public class Client extends Utilisateur {
 
     @Override
     public String toString() {
-        return super.toString() + nom + " ; " + prenom + " ; " + date_naissance + " ; " + numero_telephone + ", " + addresse + ", " + type_abonnement + "," + etat_abonnement + "," + numero_client;
+        return super.toString() + nom + " ; " + prenom + " ; " + date_naissance + " ; " + numero_telephone + ", " + addresse + ", " + type_abonnement + "," + etat_abonnement + "," + numero_client + ", " + listeCours_passes + ", " + listeCours_futurs;
     }
 
     public void inscription_cours() {

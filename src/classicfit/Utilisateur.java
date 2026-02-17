@@ -9,17 +9,17 @@ package classicfit;
  * @author lucsi
  */
 public class Utilisateur {
-    
+
     private String email; //mail d'un utilisateur
     private String mdp; //mot de passe d'un utilisateur
-    
-    public Utilisateur(String email,String mdp){
+
+    public Utilisateur(String email, String mdp) {
         this.email = email;
         this.mdp = mdp;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return email + ", " + mdp;
     }
 }

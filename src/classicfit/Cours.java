@@ -12,31 +12,31 @@ import java.util.TreeSet;
  * @author lucsi
  */
 public class Cours {
-    
+
     private String nom; //nom du cours
     private int nbre_place; //nombre de places du cours
     private final String type_cours; //type de cours (indviduel/collectif)
     private LocalDateTime duree; //durée d'un cours
-    
+
     private TreeSet<Client> liste_inscrits; //liste des personnes inscrites au cours
-            
-    public Cours(String nom,int nbre_place,String type_cours,LocalDateTime duree){
+
+    public Cours(String nom, int nbre_place, String type_cours, LocalDateTime duree) {
         this.nom = nom;
         this.nbre_place = nbre_place;
         this.type_cours = type_cours;
         this.duree = duree;
-        
+
         //Initialisation des listes
         liste_inscrits = new TreeSet<>();
     }
-    
+
     @Override
-    public String toString(){
-        return nom + "," + type_cours;
+    public String toString() {
+        return nom + "," + type_cours + ", " + duree + liste_inscrits;
     }
-    
-    public void verification_date(){
-        
+
+    public void verification_date() {
+
     }
-    
+
 }

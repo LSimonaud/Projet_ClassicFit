@@ -8,39 +8,38 @@ package classicfit;
  *
  * @author lucsi
  */
-public class Administrateur extends Utilisateur{
-    
+public class Administrateur extends Utilisateur {
+
     private String nom; //nom de l'administrateur
-    
-    public Administrateur(String email,String mdp,String nom){
-        super(email,mdp);
+
+    public Administrateur(String email, String mdp, String nom) {
+        super(email, mdp);
         this.nom = nom;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return super.toString() + " ; " + nom;
     }
-    
-    public void lister_client(){
-        
+
+    public void lister_client() {
+
     }
-    
+
     /*
     public Client rechercher_client(){
         
     }*/
-    
-    public void desactiver_abonnement(){
-        
+    public void desactiver_abonnement() {
+
     }
-    
-    public void reactiver_abonnement(){
-        
+
+    public void reactiver_abonnement() {
+
     }
-    
-    public void lister_cours(){
-        
+
+    public void lister_cours() {
+
     }
-    
+
 }

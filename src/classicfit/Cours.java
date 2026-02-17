@@ -32,7 +32,7 @@ public class Cours {
     
     @Override
     public String toString(){
-        return "";
+        return nom + "," + type_cours;
     }
     
     public void verification_date(){

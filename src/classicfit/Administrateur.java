@@ -19,7 +19,7 @@ public class Administrateur extends Utilisateur{
     
     @Override
     public String toString(){
-        return "";
+        return super.toString() + " ; " + nom;
     }
     
     public void lister_client(){

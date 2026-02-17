@@ -4,7 +4,11 @@
  */
 package classicfit;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -80,6 +84,29 @@ public class Salle {
                 numero_telephone, addresse_client, type_abonnement, numero_client);
         listeClient.add(client);
 
+    }
+    
+    public void sauvegarder() throws IOException{
+        String sep = System.lineSeparator();
+        FileWriter fichCl = new FileWriter(FICHIER_CLIENTS);
+        for(Client c : listeClient){
+            fichCl.write(c.toString());
+            fichCl.write(sep);
+        }
+        fichCl.close();
+    }
+    public void charger() throws FileNotFoundException, IOException{
+        FileReader fichCl = new FileReader(FICHIER_CLIENTS);
+        BufferedReader br = new BufferedReader(fichCl);
+        String ligne = br.readLine();
+        while(ligne != null){
+            String [] tab = ligne.split(";");
+            for (int i =0 ; i < tab.length; i++) {
+               
+            }
+            ligne = br.readLine();
+           
+        }
     }
 
 }

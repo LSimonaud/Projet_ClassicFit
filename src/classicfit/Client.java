@@ -22,13 +22,13 @@ public class Client extends Utilisateur {
     private String type_ab; //type d'abonnement d'un client (trimestriel,semstriel,annuel)
     private String etat_ab; //état de l'abonnement (actif/inactif)
 
-    private String numero_cl; //numero attribué au client
+    private int numero_cl; //numero attribué au client
 
     private TreeSet<Cours> listeCours_passes;
     private TreeSet<Cours> listeCours_futurs;
 
     public Client(String email, String mdp, String nom, String prenom, LocalDate date_naissance,
-            String numero_tel, String addresse, String type_ab, String etat_ab,String numero_cl) {
+            String numero_tel, String addresse, String type_ab, String etat_ab, int numero_cl) {
         super(email, mdp);
         this.nom = nom;
         this.prenom = prenom;
@@ -55,7 +55,7 @@ public class Client extends Utilisateur {
     }
 
     public void inscription_cours() {
-
+        
     }
 
     public void desinscription_cours() {

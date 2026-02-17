@@ -4,7 +4,9 @@
  */
 package classicfit;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.TreeSet;
 
 /**
@@ -13,18 +15,20 @@ import java.util.TreeSet;
  */
 public class Cours {
 
-    private String nom; //nom du cours
+    private String nom_co; //nom du cours
     private int nbre_place; //nombre de places du cours
-    private final String type_cours; //type de cours (indviduel/collectif)
-    private LocalDateTime duree; //durée d'un cours
+    private final String type_co; //type de cours (indviduel/collectif)
+    private LocalDate date_co; //date d'un cours
+    private LocalDateTime duree_co; //durée d'un cours
 
     private TreeSet<Client> liste_inscrits; //liste des personnes inscrites au cours
 
-    public Cours(String nom, int nbre_place, String type_cours, LocalDateTime duree) {
-        this.nom = nom;
+    public Cours(String nom_co, int nbre_place, String type_co, LocalDate date_co, LocalDateTime duree_co) {
+        this.nom_co = nom_co;
         this.nbre_place = nbre_place;
-        this.type_cours = type_cours;
-        this.duree = duree;
+        this.type_co = type_co;
+        this.date_co = date_co;
+        this.duree_co = duree_co;
 
         //Initialisation des listes
         liste_inscrits = new TreeSet<>();
@@ -32,7 +36,7 @@ public class Cours {
 
     @Override
     public String toString() {
-        return nom + "," + type_cours + ", " + duree + liste_inscrits;
+        return nom_co + ";" + nbre_place + ";" + type_co + ";" + date_co + ";" + duree_co;
     }
 
     public void verification_date() {

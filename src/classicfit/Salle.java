@@ -44,11 +44,30 @@ public class Salle {
         return "Nom de la salle :" + nom;
     }
 
-    public void Connection() {
-        System.out.println("Entrer votre addresse mail :");
-        String addresse_mail = sc.nextLine();
-        System.out.println("Entrer votre mot de passe :");
-        String mdp = sc.nextLine();
+      public String seConnecter() {
+        boolean b = false;
+        while (b == false) {
+
+            System.out.println("Entrez votre addresse mail");
+            String addresse_mail = sc.nextLine();
+            System.out.println("Entrez votre mot de passe");
+            String mdp = sc.nextLine();
+            Utilisateur u = new Utilisateur(addresse_mail, mdp);
+
+            for (Utilisateur name : listeClient) {
+                if (name == u) {
+                    b = true;
+                    return "client";
+                }
+            }
+            if (u == admin) {
+                b = true;
+                return "administrateur";
+            }
+
+            return "Email ou mot de passe incorrect";
+        }
+        return null;
     }
 
     public void Modifier_mdp() {
@@ -65,30 +84,31 @@ public class Salle {
 
         System.out.println("Veuillez entrer vos informations personnelles");
         System.out.print("Nom :");
-        String nom_client = sc.nextLine();
+        String nom_cl = sc.nextLine();
         System.out.print("Prenom :");
-        String prenom_client = sc.nextLine();
+        String prenom_cl = sc.nextLine();
         System.out.print("Date de naissance :");
         LocalDate date_naissance = LocalDate.parse(sc.nextLine(), format);
         System.out.print("Numero de telephone :");
-        String numero_telephone = sc.nextLine();
+        String numero_tel = sc.nextLine();
         System.out.print("Addresse :");
-        String addresse_client = sc.nextLine();
+        String addresse_cl = sc.nextLine();
 
         System.out.print("Veuillez choisir un type d'abonnement : (trimestriel/semestriel/annuel)");
-        String type_abonnement = sc.nextLine();
-        String etat_abonnement = "actif";
+        String type_ab = sc.nextLine();
+        String etat_ab = "actif";
+        
+        int numero_cl = listeClient.size()+1;
 
-        String numero_client = "1";
-
-        Client client = new Client(addresse_mail, mdp, nom_client, prenom_client, date_naissance,
-                numero_telephone, addresse_client, type_abonnement, etat_abonnement, numero_client);
+        Client client = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
+                numero_tel, addresse_cl, type_ab, etat_ab, numero_cl);
         listeClient.add(client);
 
     }
     
     public void sauvegarder() throws IOException{
         String sep = System.lineSeparator();
+        
         FileWriter fichCl = new FileWriter(FICHIER_CLIENTS);
         for(Client cl : listeClient){
             fichCl.write(cl.toString());
@@ -120,7 +140,7 @@ public class Salle {
             String addresse_cl = tab[6];
             String type_ab = tab[7];
             String etat_ab = tab[8];
-            String numero_cl = tab[9];
+            int numero_cl = Integer.parseInt(tab[9]);
                
             Client cl = new Client(addresse_mail,mdp,nom_cl,prenom_cl,date_naissance,numero_tel,
                        addresse_cl,type_ab,etat_ab,numero_cl);
@@ -133,6 +153,7 @@ public class Salle {
         ligne = br2.readLine();
         while (ligne != null){
             String [] tab = ligne.split(";");
+            
         }
         
     }

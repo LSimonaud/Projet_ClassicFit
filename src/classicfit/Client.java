@@ -6,7 +6,7 @@ package classicfit;
 
 import java.time.LocalDate;
 import java.util.TreeSet;
-
+import java.util.Scanner;
 /**
  *
  * @author lucsi
@@ -26,6 +26,8 @@ public class Client extends Utilisateur {
 
     private TreeSet<Cours> listeCours_passes;
     private TreeSet<Cours> listeCours_futurs;
+    
+    Scanner sc = new Scanner(System.in);
 
     public Client(String email, String mdp, String nom, String prenom, LocalDate date_naissance,
             String numero_tel, String addresse, String type_ab, String etat_ab, int numero_cl) {
@@ -52,6 +54,17 @@ public class Client extends Utilisateur {
                 + numero_tel + ";" + addresse + ";" + type_ab + ";" 
                 + etat_ab + ";" + numero_cl + ";" + listeCours_passes + ";" 
                 + listeCours_futurs;
+    }
+    
+    public void Modifier_mdp() {
+        System.out.println("Entrez le nouveau mot de passe");
+        String nouv_mdp = sc.nextLine();
+        String nouv_mdp1 = "a";
+        while(!nouv_mdp.equals(nouv_mdp1)){
+                System.out.println("Verifiaction de mot de passe : Entrez de nouveau le mot de passe");
+                nouv_mdp1 = sc.nextLine();
+        }
+        
     }
 
     public void inscription_cours() {

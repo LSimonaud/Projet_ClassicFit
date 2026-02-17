@@ -18,5 +18,8 @@ public class Utilisateur {
         this.mdp = mdp;
     }
     
-   
+    @Override
+    public String toString(){
+        return "email" + " ; " + "mdp";
+    }
 }

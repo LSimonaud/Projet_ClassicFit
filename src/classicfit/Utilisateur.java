@@ -24,10 +24,10 @@ public class Utilisateur {
     }
     
     public String getmdp(){
-        return this.mdp
+        return this.mdp;
     }
     
     public String getemail(){
-        return this.email
+        return this.email;
     }
 }

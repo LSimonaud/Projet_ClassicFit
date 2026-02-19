@@ -55,17 +55,6 @@ public class Client extends Utilisateur {
                 + etat_ab + ";" + numero_cl + ";" + listeCours_passes + ";" 
                 + listeCours_futurs;
     }
-    
-    public void Modifier_mdp() {
-        System.out.println("Entrez le nouveau mot de passe");
-        String nouv_mdp = sc.nextLine();
-        String nouv_mdp1 = "a";
-        while(!nouv_mdp.equals(nouv_mdp1)){
-                System.out.println("Verifiaction de mot de passe : Entrez de nouveau le mot de passe");
-                nouv_mdp1 = sc.nextLine();
-        }
-        
-    }
 
     public void inscription_cours() {
         

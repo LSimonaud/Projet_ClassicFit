@@ -22,12 +22,12 @@ public class Utilisateur {
     public String toString() {
         return email + ";" + mdp;
     }
-    
-    public String getmdp(){
+
+    public String getmdp() {
         return this.mdp;
     }
-    
-    public String getemail(){
+
+    public String getemail() {
         return this.email;
     }
 }

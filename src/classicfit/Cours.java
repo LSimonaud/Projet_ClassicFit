@@ -20,6 +20,8 @@ public class Cours {
     private final String type_co; //type de cours (indviduel/collectif)
     private LocalDate date_co; //date d'un cours
     private LocalDateTime duree_co; //durée d'un cours
+    
+    private int ID_co; //identifiant attribué au cours
 
     private TreeSet<Client> liste_inscrits; //liste des personnes inscrites au cours
 

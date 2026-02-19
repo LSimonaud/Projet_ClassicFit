@@ -64,7 +64,6 @@ public class Salle {
                 b = true;
                 return "administrateur";
             }
-
             return "Email ou mot de passe incorrect";
         }
         return null;
@@ -75,18 +74,15 @@ public class Salle {
         String nouv_mdp = sc.nextLine();
         String nouv_mdp1 = "a";
         String email = sc.nextLine();
-        while(!nouv_mdp.equals(nouv_mdp1)){
-                System.out.println("Verifiaction de mot de passe : Entrez de nouveau le mot de passe");
-                nouv_mdp1 = sc.nextLine();
+        while (!nouv_mdp.equals(nouv_mdp1)) {
+            System.out.println("Verifiaction de mot de passe : Entrez de nouveau le mot de passe");
+            nouv_mdp1 = sc.nextLine();
         }
         for (Utilisateur name : listeClient) {
-                if (name.getemail()== email) {
-                    //name.getmdp() = nouv_mdp1;
-                   
-                }
+            if (name.getemail() == email) {
+                nouv_mdp1 = name.getmdp();
             }
-       
-       
+        }
     }
 
     public void Creer_compte() {
@@ -112,65 +108,85 @@ public class Salle {
         System.out.print("Veuillez choisir un type d'abonnement : (trimestriel/semestriel/annuel)");
         String type_ab = sc.nextLine();
         String etat_ab = "actif";
-        
-        int numero_cl = listeClient.size()+1;
+
+        int numero_cl = listeClient.size() + 1;
 
         Client client = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
                 numero_tel, addresse_cl, type_ab, etat_ab, numero_cl);
         listeClient.add(client);
-
     }
-    
-    public void sauvegarder() throws IOException{
+
+    public void sauvegarder() throws IOException {
         String sep = System.lineSeparator();
-        
+
         FileWriter fichCl = new FileWriter(FICHIER_CLIENTS);
-        for(Client cl : listeClient){
+        for (Client cl : listeClient) {
             fichCl.write(cl.toString());
             fichCl.write(sep);
         }
         fichCl.close();
-        
+
         FileWriter fichCo = new FileWriter(FICHIER_COURS);
-        for (Cours co : listeCours){
+        for (Cours co : listeCours) {
             fichCo.write(co.toString());
             fichCo.write(sep);
         }
     }
-    
-    public void charger() throws FileNotFoundException, IOException{
+
+    public void charger() throws FileNotFoundException, IOException {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
+
         FileReader fichCl = new FileReader(FICHIER_CLIENTS);
         BufferedReader br = new BufferedReader(fichCl);
         String ligne = br.readLine();
-        while(ligne != null){
-            String [] tab = ligne.split(";");
+        while (ligne != null) {
+            String[] tab = ligne.split(";");
             String addresse_mail = tab[0];
             String mdp = tab[1];
             String nom_cl = tab[2];
             String prenom_cl = tab[3];
-            LocalDate date_naissance = LocalDate.parse(tab[4],format);
+            LocalDate date_naissance = LocalDate.parse(tab[4], format);
             String numero_tel = tab[5];
             String addresse_cl = tab[6];
             String type_ab = tab[7];
             String etat_ab = tab[8];
             int numero_cl = Integer.parseInt(tab[9]);
-               
-            Client cl = new Client(addresse_mail,mdp,nom_cl,prenom_cl,date_naissance,numero_tel,
-                       addresse_cl,type_ab,etat_ab,numero_cl);
+
+            Client cl = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance, numero_tel,
+                    addresse_cl, type_ab, etat_ab, numero_cl);
             listeClient.add(cl);
             ligne = br.readLine();
         }
-        
+
         FileReader fichCo = new FileReader(FICHIER_COURS);
         BufferedReader br2 = new BufferedReader(fichCo);
         ligne = br2.readLine();
-        while (ligne != null){
-            String [] tab = ligne.split(";");
-            
+        while (ligne != null) {
+            String[] tab = ligne.split(";");
         }
-        
     }
 
+    public Client Rechercher_client_IDcl(int ID) throws UserNotFoundException {
+        if (ID <= 0) {
+            throw new IllegalArgumentException("ID invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getID_client() == ID) {
+                return cl;
+            }
+        }
+        throw new UserNotFoundException("Utilisateur avec ID " + ID + " introuvable.");
+    }
+
+    public Client Rechercher_client_nomCl(String nom) throws UserNotFoundException {
+        if (nom==null || nom.trim().isEmpty()==true || nom.matches("[a-zA-Z]+")==false){
+            throw new IllegalArgumentException("Nom invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getnom_client().equalsIgnoreCase(nom)) {
+                return cl;
+            }
+        }
+        throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
+    }
 }

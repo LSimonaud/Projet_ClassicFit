@@ -20,8 +20,8 @@ import java.util.TreeSet;
  */
 public class Salle {
 
-    private String nom; //Nom de la salle de sport
-    private Administrateur admin; //Administrateur de la salle
+    private final String nom; //Nom de la salle de sport
+    private final Administrateur admin; //Administrateur de la salle
     private TreeSet<Cours> listeCours; //liste des cours passés et futurs
     private TreeSet<Client> listeClient; //liste de tous les clients de la salle
 
@@ -85,28 +85,59 @@ public class Salle {
         }
     }
 
-    public void Creer_compte() {
+    public void Creer_compte() throws IllegalArgumentException {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         System.out.println("Entrer une addresse mail :");
         String addresse_mail = sc.nextLine();
-        System.out.println("Definir un mot de passe :");
+        if (addresse_mail==null || addresse_mail.trim().isEmpty() || !addresse_mail.matches(".*[@].*")){
+            throw new IllegalArgumentException("Addresse mail invalide");
+        }
+        System.out.println("Definir un mot de passe (12 caracteres minimum, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractere speciale):");
         String mdp = sc.nextLine();
+        if (mdp==null || mdp.trim().isEmpty() || mdp.length()<12 || !mdp.matches(".*[^a-zA-Z0-9].*") || !mdp.matches(".*[a-z].*") || !mdp.matches(".*[A-Z].*") || !mdp.matches(".*[0-9].*")){
+            throw new IllegalArgumentException("Mot de passe invalide");
+        }
 
         System.out.println("Veuillez entrer vos informations personnelles");
-        System.out.print("Nom :");
+        System.out.println("Nom :");
         String nom_cl = sc.nextLine();
-        System.out.print("Prenom :");
+        if (nom_cl==null || nom_cl.trim().isEmpty() || !nom_cl.matches("[a-zA-Z]")){
+            throw new IllegalArgumentException("Nom invalide");
+        }
+        System.out.println("Prenom :");
         String prenom_cl = sc.nextLine();
-        System.out.print("Date de naissance :");
-        LocalDate date_naissance = LocalDate.parse(sc.nextLine(), format);
-        System.out.print("Numero de telephone :");
+        if (prenom_cl==null || prenom_cl.trim().isEmpty() || !prenom_cl.matches("[a-zA-Z]")){
+            throw new IllegalArgumentException("Prenom invalide");
+        }
+        System.out.println("Date de naissance (dd_MM-yyyy) :");
+        String date = sc.nextLine();
+        if (date==null || date.trim().isEmpty() || !date.matches("[0-9]") || !date.matches(".*[-].*")){
+            throw new IllegalArgumentException("Date de naissance invalide");
+        }
+        LocalDate date_naissance = LocalDate.parse(date, format);
+        System.out.println("Numero de telephone :");
         String numero_tel = sc.nextLine();
-        System.out.print("Addresse :");
+        if (numero_tel==null || numero_tel.trim().isEmpty() || !numero_tel.matches("[0-9]")){
+            throw new IllegalArgumentException("Numero de telephone invalide");
+        }
+        System.out.println("Addresse :");
         String addresse_cl = sc.nextLine();
+        if (addresse_cl==null || addresse_cl.trim().isEmpty() || !addresse_cl.matches("[a-zA-Z0-9]")){
+            throw new IllegalArgumentException("Addresse invalide");
+        }
 
-        System.out.print("Veuillez choisir un type d'abonnement : (trimestriel/semestriel/annuel)");
-        String type_ab = sc.nextLine();
+        System.out.println("Veuillez choisir un type d'abonnement : 1-trimestriel 2-semestriel 3-annuel)");
+        int rep = sc.nextInt();
+        if (rep!=1 || rep!=2 || rep!=3){
+            throw new IllegalArgumentException("Reponse invalide");
+        }
+        String type_ab = " ";
+        switch (rep) {
+            case 1 -> type_ab = "trimestriel";
+            case 2 -> type_ab = "semestriel";
+            case 3 -> type_ab = "annuel";
+        }
         String etat_ab = "actif";
 
         int numero_cl = listeClient.size() + 1;
@@ -116,6 +147,36 @@ public class Salle {
         listeClient.add(client);
     }
 
+    public void Consulter_listeCient(){
+        for (Client cl : listeClient){
+            cl.affichage_liste();
+        }
+    }
+    
+    public Client Rechercher_client_IDcl(int ID) throws UserNotFoundException {
+        if (ID <= 0) {
+            throw new IllegalArgumentException("ID invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getID_client() == ID) {
+                return cl;
+            }
+        }
+        throw new UserNotFoundException("Utilisateur avec ID " + ID + " introuvable.");
+    }
+
+    public Client Rechercher_client_nomCl(String nom) throws UserNotFoundException {
+        if (nom==null || nom.trim().isEmpty() || !nom.matches("[a-zA-Z]")){
+            throw new IllegalArgumentException("Nom invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getnom_client().equalsIgnoreCase(nom)) {
+                return cl;
+            }
+        }
+        throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
+    }
+    
     public void sauvegarder() throws IOException {
         String sep = System.lineSeparator();
 
@@ -164,29 +225,5 @@ public class Salle {
         while (ligne != null) {
             String[] tab = ligne.split(";");
         }
-    }
-
-    public Client Rechercher_client_IDcl(int ID) throws UserNotFoundException {
-        if (ID <= 0) {
-            throw new IllegalArgumentException("ID invalide");
-        }
-        for (Client cl : listeClient) {
-            if (cl.getID_client() == ID) {
-                return cl;
-            }
-        }
-        throw new UserNotFoundException("Utilisateur avec ID " + ID + " introuvable.");
-    }
-
-    public Client Rechercher_client_nomCl(String nom) throws UserNotFoundException {
-        if (nom==null || nom.trim().isEmpty()==true || nom.matches("[a-zA-Z]+")==false){
-            throw new IllegalArgumentException("Nom invalide");
-        }
-        for (Client cl : listeClient) {
-            if (cl.getnom_client().equalsIgnoreCase(nom)) {
-                return cl;
-            }
-        }
-        throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
     }
 }

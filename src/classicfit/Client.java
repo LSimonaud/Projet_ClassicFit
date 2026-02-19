@@ -53,7 +53,7 @@ public class Client extends Utilisateur {
     public String toString() {
         return super.toString() + ";" + nom + ";" + prenom + ";" + date_naissance + ";"
                 + numero_tel + ";" + addresse + ";" + type_ab + ";"
-                + etat_ab + ";" + ID_cl + ";" + listeCours_passes + ";"
+                + etat_ab + ";" + String.valueOf(ID_cl) + ";" + listeCours_passes + ";"
                 + listeCours_futurs;
     }
 
@@ -64,20 +64,8 @@ public class Client extends Utilisateur {
     public String getnom_client(){
         return this.nom;
     }
-    public void inscription_cours() {
-
+    
+    public String affichage_liste(){
+        return nom + " " + prenom + " ID : " + String.valueOf(ID_cl);
     }
-
-    public void desinscription_cours() {
-
-    }
-
-    public void inscription_activite() {
-
-    }
-
-    public void desinscription_activite() {
-
-    }
-
 }

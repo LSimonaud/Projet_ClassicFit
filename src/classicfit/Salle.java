@@ -44,31 +44,43 @@ public class Salle {
         return "Nom de la salle :" + nom;
     }
 
-    public String seConnecter() {
-        boolean b = false;
-        while (b == false) {
-
-            System.out.println("Entrez votre addresse mail");
-            String addresse_mail = sc.nextLine();
-            System.out.println("Entrez votre mot de passe");
-            String mdp = sc.nextLine();
-            Utilisateur u = new Utilisateur(addresse_mail, mdp);
-
-            for (Utilisateur name : listeClient) {
-                if (name == u) {
-                    b = true;
+    public String seConnecter(String email,String mdp){
+        if (email==null || email.trim().isEmpty() || !email.matches("[@]")){
+            return "Addresse mail invalide";
+        }
+        if (mdp==null || mdp.trim().isEmpty()){
+            return "Mot de passe invalide";
+        }
+        
+        if (admin.getemail().equalsIgnoreCase(email) && admin.getmdp().equalsIgnoreCase(mdp)){
+            return "administrateur";
+        }else{
+            for (Client cl : listeClient) {
+                if (cl.getemail().equalsIgnoreCase(email) && cl.getmdp().equalsIgnoreCase(mdp)){
                     return "client";
                 }
             }
-            if (u == admin) {
-                b = true;
-                return "administrateur";
-            }
-            return "Email ou mot de passe incorrect";
         }
-        return null;
+        return "Email ou mot de passe incorrect";
     }
 
+    public String mdp_oublie(String email){
+        if (email==null || email.trim().isEmpty() || !email.matches("[@]")){
+            return "Addresse mail invalide";
+        }
+        
+        if (admin.getemail().equalsIgnoreCase(email)){
+            return admin.getmdp();
+        }else{
+            for (Client cl : listeClient){
+                if (cl.getemail().equalsIgnoreCase(email)){
+                    return cl.getmdp();
+                }
+            }
+        }
+        return "Email incorrect";
+    }
+    
     public void Modifier_mdp() {
         System.out.println("Entrez le nouveau mot de passe");
         String nouv_mdp = sc.nextLine();

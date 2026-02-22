@@ -18,7 +18,7 @@ public class Client extends Utilisateur {
     private String prenom_cl; //prenom du client
     private LocalDate date_naissance; //date de naissance du client
     private String numero_tel; //numero de telephone du client
-    private String addresse_cl; //addresse du client
+    private String adresse_cl; //addresse du client
 
     private String type_ab; //type d'abonnement d'un client (trimestriel,semstriel,annuel)
     private String etat_ab; //état de l'abonnement (actif/inactif)
@@ -29,13 +29,13 @@ public class Client extends Utilisateur {
     private LinkedList<Cours> listeCours_futurs;
 
     public Client(String email, String mdp, String nom, String prenom, LocalDate date_naissance,
-            String numero_tel, String addresse, String type_ab, String etat_ab, int ID_cl) {
+            String numero_tel, String adresse, String type_ab, String etat_ab, int ID_cl) {
         super(email, mdp);
         this.nom_cl = nom;
         this.prenom_cl = prenom;
         this.date_naissance = date_naissance;
         this.numero_tel = numero_tel;
-        this.addresse_cl = addresse;
+        this.adresse_cl = adresse;
 
         this.ID_cl = ID_cl;
 
@@ -50,7 +50,7 @@ public class Client extends Utilisateur {
     @Override
     public String toString() {
         return super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance + ";"
-                + numero_tel + ";" + addresse_cl + ";" + type_ab + ";"
+                + numero_tel + ";" + adresse_cl + ";" + type_ab + ";"
                 + etat_ab + ";" + String.valueOf(ID_cl) + ";" + listeCours_passes + ";"
                 + listeCours_futurs;
     }
@@ -75,9 +75,9 @@ public class Client extends Utilisateur {
         return "Numero de telephone : "+numero_tel;
     }
     
-    public String modifier_addresse(String addresse){
-        this.addresse_cl = addresse;
-        return "Addresse : "+addresse_cl;
+    public String modifier_adresse(String adresse){
+        this.adresse_cl = adresse;
+        return "Addresse : "+adresse_cl;
     }
     
     public String modifier_abonnement(String abonnement){
@@ -112,7 +112,7 @@ public class Client extends Utilisateur {
         System.out.println("Prenom : "+prenom_cl);
         System.out.println("Date de naissance : "+ date_naissance);
         System.out.println("Numero de telephone : "+ numero_tel);
-        System.out.println("Addresse : "+ addresse_cl);
+        System.out.println("Adresse : "+ adresse_cl);
         System.out.println("Type d'abonnement : "+ type_ab);
     }
 }

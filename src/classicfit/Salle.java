@@ -47,7 +47,7 @@ public class Salle {
 
     public Utilisateur seConnecter(String email, String mdp) throws UserNotFoundException {
         if (email == null || email.trim().isEmpty() || !email.matches("[@]")) {
-            throw new IllegalArgumentException("Addresse mail invalide");
+            throw new IllegalArgumentException("Adresse mail invalide");
         }
         if (mdp == null || mdp.trim().isEmpty()) {
             throw new IllegalArgumentException("Mot de passe invalide");
@@ -67,7 +67,7 @@ public class Salle {
 
     public String mdp_oublie(String email) {
         if (email == null || email.trim().isEmpty() || !email.matches("[@]")) {
-            return "Addresse mail invalide";
+            return "Adresse mail invalide";
         }
 
         if (admin.getemail().equalsIgnoreCase(email)) {
@@ -100,10 +100,10 @@ public class Salle {
 
     public void Creer_compte() throws IllegalArgumentException {
 
-        System.out.println("Entrer une addresse mail :");
-        String addresse_mail = sc.nextLine();
-        if (addresse_mail == null || addresse_mail.trim().isEmpty() || !addresse_mail.matches(".*[@].*")) {
-            throw new IllegalArgumentException("Addresse mail invalide");
+        System.out.println("Entrer une adresse mail :");
+        String adresse_mail = sc.nextLine();
+        if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches(".*[@].*")) {
+            throw new IllegalArgumentException("Adresse mail invalide");
         }
         System.out.println("Definir un mot de passe (12 caracteres minimum, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractere speciale):");
         String mdp = sc.nextLine();
@@ -134,9 +134,9 @@ public class Salle {
         if (numero_tel == null || numero_tel.trim().isEmpty() || !numero_tel.matches("^\\d{10}$")) {
             throw new IllegalArgumentException("Numero de telephone invalide");
         }
-        System.out.println("Addresse :");
-        String addresse_cl = sc.nextLine();
-        if (addresse_cl == null || addresse_cl.trim().isEmpty() || !addresse_cl.matches("[a-zA-Z0-9]")) {
+        System.out.println("Adresse :");
+        String adresse_cl = sc.nextLine();
+        if (adresse_cl == null || adresse_cl.trim().isEmpty() || !adresse_cl.matches("[a-zA-Z0-9]")) {
             throw new IllegalArgumentException("Addresse invalide");
         }
 
@@ -165,8 +165,8 @@ public class Salle {
 
         int ID_cl = listeClient.size() + 1;
 
-        Client client = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
-                numero_tel, addresse_cl, type_ab, etat_ab, ID_cl);
+        Client client = new Client(adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
+                numero_tel, adresse_cl, type_ab, etat_ab, ID_cl);
         listeClient.add(client);
     }
 
@@ -217,12 +217,12 @@ public class Salle {
                 break;
             }
             case 5 -> {
-                System.out.println("Entrer une nouvelle Addresse :");
-                String new_addresse = sc.nextLine();
-                if (new_addresse == null || new_addresse.trim().isEmpty() || !new_addresse.matches("[a-zA-Z0-9]")) {
+                System.out.println("Entrer une nouvelle Adresse :");
+                String new_adresse = sc.nextLine();
+                if (new_adresse == null || new_adresse.trim().isEmpty() || !new_adresse.matches("[a-zA-Z0-9]")) {
                     throw new IllegalArgumentException("Addresse invalide");
                 }
-                System.out.println(cl.modifier_addresse(new_addresse));
+                System.out.println(cl.modifier_adresse(new_adresse));
                 break;
             }
             case 6 -> {

@@ -46,7 +46,7 @@ public class Salle {
     }
 
     public Utilisateur seConnecter(String email, String mdp) throws UserNotFoundException {
-        if (email == null || email.trim().isEmpty() || !email.matches("[@]")) {
+        if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             throw new IllegalArgumentException("Adresse mail invalide");
         }
         if (mdp == null || mdp.trim().isEmpty()) {
@@ -66,7 +66,7 @@ public class Salle {
     }
 
     public String mdp_oublie(String email) {
-        if (email == null || email.trim().isEmpty() || !email.matches("[@]")) {
+        if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             return "Adresse mail invalide";
         }
 
@@ -102,24 +102,24 @@ public class Salle {
 
         System.out.println("Entrer une adresse mail :");
         String adresse_mail = sc.nextLine();
-        if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches(".*[@].*")) {
+        if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             throw new IllegalArgumentException("Adresse mail invalide");
         }
         System.out.println("Definir un mot de passe (12 caracteres minimum, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractere speciale):");
         String mdp = sc.nextLine();
-        if (mdp == null || mdp.trim().isEmpty() || mdp.length() < 12 || !mdp.matches(".*[^a-zA-Z0-9].*") || !mdp.matches(".*[a-z].*") || !mdp.matches(".*[A-Z].*") || !mdp.matches(".*[0-9].*")) {
+        if (mdp == null || mdp.trim().isEmpty() || !mdp.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&,.#:;\\-_/])[A-Za-z\\d@$!%*?&,.#:;\\-_/]{12,}$")) {
             throw new IllegalArgumentException("Mot de passe invalide");
         }
 
         System.out.println("Veuillez entrer vos informations personnelles");
         System.out.println("Nom :");
         String nom_cl = sc.nextLine();
-        if (nom_cl == null || nom_cl.trim().isEmpty() || !nom_cl.matches("[a-zA-Z]")) {
+        if (nom_cl == null || nom_cl.trim().isEmpty() || !nom_cl.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
             throw new IllegalArgumentException("Nom invalide");
         }
         System.out.println("Prenom :");
         String prenom_cl = sc.nextLine();
-        if (prenom_cl == null || prenom_cl.trim().isEmpty() || !prenom_cl.matches("[a-zA-Z]")) {
+        if (prenom_cl == null || prenom_cl.trim().isEmpty() || !prenom_cl.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+([-'][A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
             throw new IllegalArgumentException("Prenom invalide");
         }
         System.out.println("Date de naissance (dd-MM-yyyy) :");
@@ -136,7 +136,7 @@ public class Salle {
         }
         System.out.println("Adresse :");
         String adresse_cl = sc.nextLine();
-        if (adresse_cl == null || adresse_cl.trim().isEmpty() || !adresse_cl.matches("[a-zA-Z0-9]")) {
+        if (adresse_cl == null || adresse_cl.trim().isEmpty() || !adresse_cl.matches("^[0-9A-Za-zÀ-ÖØ-öø-ÿ'’ .,-]+$")) {
             throw new IllegalArgumentException("Addresse invalide");
         }
 
@@ -182,7 +182,7 @@ public class Salle {
             case 1 -> {
                 System.out.println("Entrer un nouveau Nom :");
                 String new_nom = sc.nextLine();
-                if (new_nom == null || new_nom.trim().isEmpty() || !new_nom.matches("[a-zA-Z]")) {
+                if (new_nom == null || new_nom.trim().isEmpty() || !new_nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
                     throw new IllegalArgumentException("Nom invalide");
                 }
                 System.out.println(cl.modifier_nom(new_nom));
@@ -191,7 +191,7 @@ public class Salle {
             case 2 -> {
                 System.out.println("Entrer un nouveau Prenom :");
                 String new_prenom = sc.nextLine();
-                if (new_prenom == null || new_prenom.trim().isEmpty() || !new_prenom.matches("[a-zA-Z]")) {
+                if (new_prenom == null || new_prenom.trim().isEmpty() || !new_prenom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+([-'][A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
                     throw new IllegalArgumentException("Prenom invalide");
                 }
                 System.out.println(cl.modifier_prenom(new_prenom));
@@ -219,7 +219,7 @@ public class Salle {
             case 5 -> {
                 System.out.println("Entrer une nouvelle Adresse :");
                 String new_adresse = sc.nextLine();
-                if (new_adresse == null || new_adresse.trim().isEmpty() || !new_adresse.matches("[a-zA-Z0-9]")) {
+                if (new_adresse == null || new_adresse.trim().isEmpty() || !new_adresse.matches("^[0-9A-Za-zÀ-ÖØ-öø-ÿ'’ .,-]+$")) {
                     throw new IllegalArgumentException("Addresse invalide");
                 }
                 System.out.println(cl.modifier_adresse(new_adresse));
@@ -273,7 +273,7 @@ public class Salle {
     }
 
     public Client Rechercher_client_nom(String nom) throws UserNotFoundException {
-        if (nom == null || nom.trim().isEmpty() || !nom.matches("[a-zA-Z]")) {
+        if (nom == null || nom.trim().isEmpty() || !nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
             throw new IllegalArgumentException("Nom invalide");
         }
         for (Client cl : listeClient) {
@@ -297,7 +297,7 @@ public class Salle {
     public void Ajouter_cours() throws IllegalArgumentException {
         System.out.println("Entrer le nom du cours :");
         String nom_co = sc.nextLine();
-        if (nom_co == null || nom_co.trim().isEmpty() || !nom_co.matches("[a-zA-Z]")) {
+        if (nom_co == null || nom_co.trim().isEmpty() || !nom_co.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9'’()\\- ]{3,50}$")) {
             throw new IllegalArgumentException("Nom invalide");
         }
         System.out.println("Entrer le nombre de places :");

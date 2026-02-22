@@ -254,9 +254,9 @@ public class Salle {
         }
     }
 
-    public void Consulter_listeCient() {
+    public void Consulter_listeClient() {
         for (Client cl : listeClient) {
-            cl.affichage_liste();
+            System.out.println(cl.affichage_liste());
         }
     }
 
@@ -335,6 +335,12 @@ public class Salle {
         
         Cours cours = new Cours(nom_co,nbre_place,type_co,date_co,duree_co,ID_co);
         listeCours.add(cours);
+    }
+    
+    public void Consulter_listeCours(){
+        for (Cours co : listeCours){
+            System.out.println(co.affichage_liste());
+        }
     }
     
     public void sauvegarder() throws IOException {

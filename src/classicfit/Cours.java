@@ -40,6 +40,10 @@ public class Cours {
     public String toString() {
         return nom_co + ";" + nbre_place + ";" + type_co + ";" + date_co + ";" + duree_co;
     }
+    
+    public String affichage_liste(){
+        return nom_co+" "+type_co+" "+nbre_place+" places"+date_co+" "+duree_co+" minutes";
+    }
 
     public void verification_date() {
 

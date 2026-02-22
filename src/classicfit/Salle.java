@@ -124,14 +124,14 @@ public class Salle {
         }
         System.out.println("Date de naissance (dd-MM-yyyy) :");
         String date = sc.nextLine();
-        if (date == null || date.trim().isEmpty() || !date.matches("[0-9]") || !date.matches(".*[-].*")) {
-            throw new IllegalArgumentException("Date de naissance invalide");
+        if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+            throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
         LocalDate date_naissance = LocalDate.parse(date, format);
 
         System.out.println("Numero de telephone :");
         String numero_tel = sc.nextLine();
-        if (numero_tel == null || numero_tel.trim().isEmpty() || !numero_tel.matches("[0-9]")) {
+        if (numero_tel == null || numero_tel.trim().isEmpty() || !numero_tel.matches("^\\d{10}$")) {
             throw new IllegalArgumentException("Numero de telephone invalide");
         }
         System.out.println("Addresse :");
@@ -140,7 +140,7 @@ public class Salle {
             throw new IllegalArgumentException("Addresse invalide");
         }
 
-        System.out.println("Veuillez choisir un type d'abonnement : 1-trimestriel 2-semestriel 3-annuel");
+        System.out.println("Veuillez selectionner un type d'abonnement : 1-trimestriel 2-semestriel 3-annuel");
         int rep = sc.nextInt();
         sc.nextLine();
         if (rep != 1 || rep != 2 || rep != 3) {
@@ -163,10 +163,10 @@ public class Salle {
         }
         String etat_ab = "actif";
 
-        int numero_cl = listeClient.size() + 1;
+        int ID_cl = listeClient.size() + 1;
 
         Client client = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
-                numero_tel, addresse_cl, type_ab, etat_ab, numero_cl);
+                numero_tel, addresse_cl, type_ab, etat_ab, ID_cl);
         listeClient.add(client);
     }
 
@@ -180,7 +180,7 @@ public class Salle {
         sc.nextLine();
         switch (choix) {
             case 1 -> {
-                System.out.println("Entrez un nouveau Nom :");
+                System.out.println("Entrer un nouveau Nom :");
                 String new_nom = sc.nextLine();
                 if (new_nom == null || new_nom.trim().isEmpty() || !new_nom.matches("[a-zA-Z]")) {
                     throw new IllegalArgumentException("Nom invalide");
@@ -189,7 +189,7 @@ public class Salle {
                 break;
             }
             case 2 -> {
-                System.out.println("Entrez un nouveau Prenom :");
+                System.out.println("Entrer un nouveau Prenom :");
                 String new_prenom = sc.nextLine();
                 if (new_prenom == null || new_prenom.trim().isEmpty() || !new_prenom.matches("[a-zA-Z]")) {
                     throw new IllegalArgumentException("Prenom invalide");
@@ -198,26 +198,26 @@ public class Salle {
                 break;
             }
             case 3 -> {
-                System.out.println("Entrez une nouvelle Date de naissance (dd-MM-yyyy):");
+                System.out.println("Entrer une nouvelle Date de naissance (dd-MM-yyyy):");
                 String new_date = sc.nextLine();
-                if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("[0-9]") || !new_date.matches(".*[-].*")) {
-                    throw new IllegalArgumentException("Date de naissance invalide");
+                if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")){
+                    throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
                 }
                 LocalDate new_date_naissance = LocalDate.parse(new_date, format);
                 System.out.println(cl.modifier_date_naissance(new_date_naissance));
                 break;
             }
             case 4 -> {
-                System.out.println("Entrez un nouveau Numero de telephone :");
+                System.out.println("Entrer un nouveau Numero de telephone :");
                 String new_num_tel = sc.nextLine();
-                if (new_num_tel == null || new_num_tel.trim().isEmpty() || !new_num_tel.matches("[0-9]")) {
+                if (new_num_tel == null || new_num_tel.trim().isEmpty() || !new_num_tel.matches("^\\d{10}$")) {
                     throw new IllegalArgumentException("Numero de telephone invalide");
                 }
                 System.out.println(cl.modifier_numero_telephone(new_num_tel));
                 break;
             }
             case 5 -> {
-                System.out.println("Entrez une nouvelle Addresse :");
+                System.out.println("Entrer une nouvelle Addresse :");
                 String new_addresse = sc.nextLine();
                 if (new_addresse == null || new_addresse.trim().isEmpty() || !new_addresse.matches("[a-zA-Z0-9]")) {
                     throw new IllegalArgumentException("Addresse invalide");
@@ -226,7 +226,7 @@ public class Salle {
                 break;
             }
             case 6 -> {
-                System.out.println("Choisissez un nouveau Type d'abonnement : 1-trimestriel 2-semestriel 3-annuel");
+                System.out.println("Selectionner un nouveau Type d'abonnement : 1-trimestriel 2-semestriel 3-annuel");
                 int i = sc.nextInt();
                 sc.nextLine();
                 if (i != 1 || i != 2 || i != 3) {
@@ -260,7 +260,7 @@ public class Salle {
         }
     }
 
-    public Client Rechercher_client_IDcl(int ID) throws UserNotFoundException {
+    public Client Rechercher_client_ID(int ID) throws UserNotFoundException {
         if (ID <= 0) {
             throw new IllegalArgumentException("ID invalide");
         }
@@ -272,7 +272,7 @@ public class Salle {
         throw new UserNotFoundException("Utilisateur avec ID " + ID + " introuvable.");
     }
 
-    public Client Rechercher_client_nomCl(String nom) throws UserNotFoundException {
+    public Client Rechercher_client_nom(String nom) throws UserNotFoundException {
         if (nom == null || nom.trim().isEmpty() || !nom.matches("[a-zA-Z]")) {
             throw new IllegalArgumentException("Nom invalide");
         }
@@ -284,14 +284,59 @@ public class Salle {
         throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
     }
     
-    public void Desactiver_abonnement(String nom){
-        
+    public void Desactiver_abonnement(String nom) throws UserNotFoundException{
+        Client cl = this.Rechercher_client_nom(nom);
+        System.out.println(cl.modifier_etat_abonnement());
     }
     
-    public void Reactiver_abonnement(String nom){
-        
+    public void Reactiver_abonnement(String nom) throws UserNotFoundException{
+        Client cl = this.Rechercher_client_nom(nom);
+        System.out.println(cl.modifier_etat_abonnement());
     }
 
+    public void Ajouter_cours() throws IllegalArgumentException {
+        System.out.println("Entrer le nom du cours :");
+        String nom_co = sc.nextLine();
+        if (nom_co == null || nom_co.trim().isEmpty() || !nom_co.matches("[a-zA-Z]")) {
+            throw new IllegalArgumentException("Nom invalide");
+        }
+        System.out.println("Entrer le nombre de places :");
+        int nbre_place = sc.nextInt();
+        sc.nextLine();
+        if (nbre_place<=0){
+            throw new IllegalArgumentException("Nombre de place invalide");
+        }
+        System.out.println("Selectionner le type de cours : 1-Individuel 2-Collectif");
+        int choix = sc.nextInt();
+        sc.nextLine();
+        if (choix!=1 || choix!=2){
+            throw new IllegalArgumentException("Reponse invalide");
+        }
+        String type_co = " ";
+        if (choix == 1){
+            type_co = "individuel";
+        }else{
+            type_co = "collectif";
+        }
+        System.out.println("Entrer la date du cours (dd-MM-yyyy):");
+        String date = sc.nextLine();
+        if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")){
+            throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
+        }
+        LocalDate date_co = LocalDate.parse(date, format);
+        System.out.println("Entrer la duree du cours :");
+        int duree_co = sc.nextInt();
+        sc.nextLine();
+        if (duree_co<=0){
+            throw new IllegalArgumentException("Duree invalide");
+        }
+        
+        int ID_co = listeCours.size() + 1;
+        
+        Cours cours = new Cours(nom_co,nbre_place,type_co,date_co,duree_co,ID_co);
+        listeCours.add(cours);
+    }
+    
     public void sauvegarder() throws IOException {
         String sep = System.lineSeparator();
 

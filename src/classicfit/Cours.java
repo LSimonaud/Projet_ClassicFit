@@ -6,7 +6,6 @@ package classicfit;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
-import java.util.TreeSet;
 
 /**
  *
@@ -24,13 +23,15 @@ public class Cours {
 
     private LinkedList<Client> liste_inscrits; //liste des personnes inscrites au cours
 
-    public Cours(String nom_co, int nbre_place, String type_co, LocalDate date_co, int duree_co) {
+    public Cours(String nom_co, int nbre_place, String type_co, LocalDate date_co, int duree_co, int ID_co) {
         this.nom_co = nom_co;
         this.nbre_place = nbre_place;
         this.type_co = type_co;
         this.date_co = date_co;
         this.duree_co = duree_co;
 
+        this.ID_co = ID_co;
+        
         //Initialisation des listes
         liste_inscrits = new LinkedList<>();
     }

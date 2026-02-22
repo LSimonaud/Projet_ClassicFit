@@ -23,12 +23,10 @@ public class Client extends Utilisateur {
     private String type_ab; //type d'abonnement d'un client (trimestriel,semstriel,annuel)
     private String etat_ab; //état de l'abonnement (actif/inactif)
 
-    private int ID_cl; //identifiant attribué au client
+    private final int ID_cl; //identifiant attribué au client
 
     private LinkedList<Cours> listeCours_passes;
     private LinkedList<Cours> listeCours_futurs;
-
-    Scanner sc = new Scanner(System.in);
 
     public Client(String email, String mdp, String nom, String prenom, LocalDate date_naissance,
             String numero_tel, String addresse, String type_ab, String etat_ab, int ID_cl) {
@@ -85,6 +83,16 @@ public class Client extends Utilisateur {
     public String modifier_abonnement(String abonnement){
         this.type_ab = abonnement;
         return "Type d'abonnement : "+type_ab;
+    }
+    
+    public String modifier_etat_abonnement(){
+        if (etat_ab.equalsIgnoreCase("actif")){
+            etat_ab = "inactif";
+            return "Etat abonnement : "+etat_ab;
+        }else{
+            etat_ab = "actif";
+            return "Etat abonnement : "+etat_ab;
+        }
     }
     
     public int getID_client(){

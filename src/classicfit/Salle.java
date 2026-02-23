@@ -64,7 +64,7 @@ public class Salle {
             }
         }
         throw new UserNotFoundException("Email ou mot de passe incorrect");
-       
+
     }
 
     public String mdp_oublie(String email) {
@@ -167,8 +167,11 @@ public class Salle {
 
         int ID_cl = listeClient.size() + 1;
 
-        Client client = new Client(adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
-                numero_tel, adresse_cl, type_ab, etat_ab, ID_cl);
+        LinkedList<Cours> listeCours_passe = new LinkedList<>();
+        LinkedList<Cours> listeCours_futur = new LinkedList<>();
+
+        Client client = new Client(ID_cl, adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
+                numero_tel, adresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
         listeClient.add(client);
         System.out.println(listeClient);
     }
@@ -203,7 +206,7 @@ public class Salle {
             case 3 -> {
                 System.out.println("Entrer une nouvelle Date de naissance (dd-MM-yyyy):");
                 String new_date = sc.nextLine();
-                if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")){
+                if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
                     throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
                 }
                 LocalDate new_date_naissance = LocalDate.parse(new_date, format);
@@ -286,13 +289,13 @@ public class Salle {
         }
         throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
     }
-    
-    public void Desactiver_abonnement(String nom) throws UserNotFoundException{
+
+    public void Desactiver_abonnement(String nom) throws UserNotFoundException {
         Client cl = this.Rechercher_client_nom(nom);
         System.out.println(cl.modifier_etat_abonnement());
     }
-    
-    public void Reactiver_abonnement(String nom) throws UserNotFoundException{
+
+    public void Reactiver_abonnement(String nom) throws UserNotFoundException {
         Client cl = this.Rechercher_client_nom(nom);
         System.out.println(cl.modifier_etat_abonnement());
     }
@@ -306,46 +309,46 @@ public class Salle {
         System.out.println("Entrer le nombre de places :");
         int nbre_place = sc.nextInt();
         sc.nextLine();
-        if (nbre_place<=0){
+        if (nbre_place <= 0) {
             throw new IllegalArgumentException("Nombre de place invalide");
         }
         System.out.println("Selectionner le type de cours : 1-Individuel 2-Collectif");
         int choix = sc.nextInt();
         sc.nextLine();
-        if (choix!=1 || choix!=2){
+        if (choix != 1 || choix != 2) {
             throw new IllegalArgumentException("Reponse invalide");
         }
         String type_co = " ";
-        if (choix == 1){
+        if (choix == 1) {
             type_co = "individuel";
-        }else{
+        } else {
             type_co = "collectif";
         }
         System.out.println("Entrer la date du cours (dd-MM-yyyy):");
         String date = sc.nextLine();
-        if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")){
+        if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
         LocalDate date_co = LocalDate.parse(date, format);
         System.out.println("Entrer la duree du cours :");
         int duree_co = sc.nextInt();
         sc.nextLine();
-        if (duree_co<=0){
+        if (duree_co <= 0) {
             throw new IllegalArgumentException("Duree invalide");
         }
-        
+
         int ID_co = listeCours.size() + 1;
-        
-        Cours cours = new Cours(nom_co,nbre_place,type_co,date_co,duree_co,ID_co);
+
+        Cours cours = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
         listeCours.add(cours);
     }
-    
-    public void Consulter_listeCours(){
-        for (Cours co : listeCours){
+
+    public void Consulter_listeCours() {
+        for (Cours co : listeCours) {
             System.out.println(co.affichage_liste());
         }
     }
-    
+
     public void sauvegarder() throws IOException {
         String sep = System.lineSeparator();
 
@@ -353,59 +356,98 @@ public class Salle {
         for (Client cl : listeClient) {
             fichCl.write(cl.toString());
             fichCl.write(sep);
-        }        
+        }
+        fichCl.close();
 
         FileWriter fichCo = new FileWriter(FICHIER_COURS);
         for (Cours co : listeCours) {
             fichCo.write(co.toString());
             fichCo.write(sep);
         }
-        
-        fichCl.close();
         fichCo.close();
     }
 
     public void charger() throws FileNotFoundException, IOException {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        boolean fichierTrouve = false;
-        while(fichierTrouve == false){
-            try{
-        FileReader fichCl = new FileReader(FICHIER_CLIENTS);
-        BufferedReader br = new BufferedReader(fichCl);
-        String ligne = br.readLine();       
-  
-          
-            String[] tab = ligne.trim().split("\\s*:\\s*"); //supprime espaces inutiles
-                   
-            String addresse_mail = tab[0];
-            String mdp = tab[1];
-            String nom_cl = tab[2];
-            String prenom_cl = tab[3];
-            LocalDate date_naissance = LocalDate.parse(tab[4], format);
-            String numero_tel = tab[5];
-            String addresse_cl = tab[6];
-            String type_ab = tab[7];
-            String etat_ab = tab[8];
-            int numero_cl = Integer.parseInt(tab[9]);
+        boolean fichierTrouve1 = false;
+        while (fichierTrouve1 == false) {
+            try {
+                FileReader fichCl = new FileReader(FICHIER_CLIENTS);
+                BufferedReader br = new BufferedReader(fichCl);
+                String ligne = br.readLine();
+                while (ligne != null) {
+                    String[] tab = ligne.trim().split(";");
+                    
+                    int numero_cl = Integer.parseInt(tab[0]);
+                    String addresse_mail = tab[1];
+                    String mdp = tab[2];
+                    String nom_cl = tab[3];
+                    String prenom_cl = tab[4];
+                    LocalDate date_naissance = LocalDate.parse(tab[5], format);
+                    String numero_tel = tab[6];
+                    String addresse_cl = tab[7];
+                    String type_ab = tab[8];
+                    String etat_ab = tab[9];
 
-            Client cl = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance, numero_tel,
-                    addresse_cl, type_ab, etat_ab, numero_cl);
-            listeClient.add(cl);
-            br.close();
-            fichierTrouve = true;
-            }catch(FileNotFoundException ex){
+                    LinkedList<Cours> listeCours_passe = new LinkedList<>();
+                    String[] tab2 = tab[10].trim().split("\\|");
+                    for (int i = 0; i < tab2.length; i++) {
+                        String[] tab3 = tab2[i].trim().split(",");
+                        int ID_co = Integer.parseInt(tab3[0]);
+                        String nom_co = tab3[1];
+                        int nbre_place = Integer.parseInt(tab3[2]);
+                        String type_co = tab3[3];
+                        LocalDate date_co = LocalDate.parse(tab3[4], format);
+                        int duree_co = Integer.parseInt(tab3[5]);
+
+                        Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
+                        listeCours_passe.add(co);
+                    }
+
+                    LinkedList<Cours> listeCours_futur = new LinkedList<>();
+                    String[] tab4 = tab[11].trim().split("\\|");
+                    for (int i = 0; i < tab4.length; i++) {
+                        String[] tab5 = tab2[i].trim().split(",");
+                        int ID_co = Integer.parseInt(tab5[0]);
+                        String nom_co = tab5[1];
+                        int nbre_place = Integer.parseInt(tab5[2]);
+                        String type_co = tab5[3];
+                        LocalDate date_co = LocalDate.parse(tab5[4], format);
+                        int duree_co = Integer.parseInt(tab5[5]);
+
+                        Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
+                        listeCours_futur.add(co);
+                    }
+
+                    Client cl = new Client(numero_cl, addresse_mail, mdp, nom_cl, prenom_cl, date_naissance, numero_tel,
+                            addresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
+                    listeClient.add(cl);
+                    ligne = br.readLine();
+                }
+                br.close();
+                fichierTrouve1 = true;
+            } catch (FileNotFoundException ex) {
                 System.out.println("fichier introuvable");
                 break;
             }
         }
-        
-
-      /*  FileReader fichCo = new FileReader(FICHIER_COURS);
-        BufferedReader br2 = new BufferedReader(fichCo);
-        String ligne = br2.readLine();
-        while (ligne != null) {
-            String[] tab = ligne.split(";");
-        }
-        fichCo.close(); */
+/*
+        boolean fichierTrouve2 = false;
+        while (fichierTrouve2 == false) {
+            try {
+                FileReader fichCo = new FileReader(FICHIER_COURS);
+                BufferedReader br2 = new BufferedReader(fichCo);
+                String ligne = br2.readLine();
+                while (ligne != null) {
+                    String[] tab = ligne.trim().split(";");
+                    
+                    
+                }
+                br2.close();
+                fichierTrouve2 = true;
+            } catch (FileNotFoundException ex) {
+                System.out.println("fichier introuvable");
+                break;
+            }
+        }*/
     }
 }

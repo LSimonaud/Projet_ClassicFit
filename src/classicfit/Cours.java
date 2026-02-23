@@ -5,6 +5,7 @@
 package classicfit;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 /**
@@ -19,11 +20,13 @@ public class Cours {
     private LocalDate date_co; //date d'un cours
     private int duree_co; //durée d'un cours en minute
     
-    private int ID_co; //identifiant attribué au cours
+    private final int ID_co; //identifiant attribué au cours
 
     private LinkedList<Client> liste_inscrits; //liste des personnes inscrites au cours
+    
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public Cours(String nom_co, int nbre_place, String type_co, LocalDate date_co, int duree_co, int ID_co) {
+    public Cours(int ID_co, String nom_co, int nbre_place, String type_co, LocalDate date_co, int duree_co) {
         this.nom_co = nom_co;
         this.nbre_place = nbre_place;
         this.type_co = type_co;
@@ -38,11 +41,15 @@ public class Cours {
 
     @Override
     public String toString() {
-        return nom_co + ";" + nbre_place + ";" + type_co + ";" + date_co + ";" + duree_co;
+        return String.valueOf(ID_co) + "," + nom_co + "," + String.valueOf(nbre_place) + "," + type_co + "," + date_co.format(format) + "," + String.valueOf(duree_co);
+    }
+    
+    public String affichage_listeCours_client() {
+        return String.valueOf(ID_co) + "," + nom_co + "," + String.valueOf(nbre_place) + "," + type_co + "," + date_co.format(format) + "," + String.valueOf(duree_co);
     }
     
     public String affichage_liste(){
-        return nom_co+" "+type_co+" "+nbre_place+" places"+date_co+" "+duree_co+" minutes";
+        return String.valueOf(ID_co)+" "+nom_co+" "+type_co+" "+String.valueOf(nbre_place)+" places"+date_co.format(format)+" "+String.valueOf(duree_co)+" minutes";
     }
 
     public void verification_date() {

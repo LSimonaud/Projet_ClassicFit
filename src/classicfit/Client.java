@@ -5,8 +5,8 @@
 package classicfit;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 /**
  *
@@ -27,9 +27,12 @@ public class Client extends Utilisateur {
 
     private LinkedList<Cours> listeCours_passes;
     private LinkedList<Cours> listeCours_futurs;
+    
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public Client(String email, String mdp, String nom, String prenom, LocalDate date_naissance,
-            String numero_tel, String adresse, String type_ab, String etat_ab, int ID_cl) {
+    public Client(int ID_cl, String email, String mdp, String nom, String prenom, LocalDate date_naissance,
+            String numero_tel, String adresse, String type_ab, String etat_ab, 
+            LinkedList<Cours> listeCours_passes, LinkedList<Cours> listeCours_futurs) {
         super(email, mdp);
         this.nom_cl = nom;
         this.prenom_cl = prenom;
@@ -40,16 +43,24 @@ public class Client extends Utilisateur {
         this.type_ab = type_ab;
         this.etat_ab = etat_ab;
         //Initialisation des listes
-        listeCours_passes = new LinkedList<>();
-        listeCours_futurs = new LinkedList<>();
+        this.listeCours_passes = listeCours_passes;
+        this.listeCours_futurs = listeCours_futurs;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance + ";"
+        return String.valueOf(ID_cl) + ";" + super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance.format(format) + ";"
                 + numero_tel + ";" + adresse_cl + ";" + type_ab + ";"
-                + etat_ab + ";" + String.valueOf(ID_cl) + ";" + listeCours_passes + ";"
-                + listeCours_futurs;
+                + etat_ab + ";" + this.Affichage_listeCours_client(listeCours_passes) + ";"
+                + this.Affichage_listeCours_client(listeCours_futurs);
+    }
+    
+    public String Affichage_listeCours_client(LinkedList<Cours> listeCours){
+        String liste = "";
+        for (Cours co : listeCours){
+            liste = liste+co.affichage_listeCours_client()+"|";
+        }
+        return liste;
     }
     
     public String modifier_nom(String nom){
@@ -64,7 +75,7 @@ public class Client extends Utilisateur {
     
     public String modifier_date_naissance(LocalDate date){
         this.date_naissance = date;
-        return "Date de naissance : "+date_naissance;
+        return "Date de naissance : "+date_naissance.format(format);
     }
     
     public String modifier_numero_telephone(String numtel){
@@ -107,7 +118,7 @@ public class Client extends Utilisateur {
     public void affichage_infos(){
         System.out.println("Nom : "+nom_cl);
         System.out.println("Prenom : "+prenom_cl);
-        System.out.println("Date de naissance : "+ date_naissance);
+        System.out.println("Date de naissance : "+ date_naissance.format(format));
         System.out.println("Numero de telephone : "+ numero_tel);
         System.out.println("Adresse : "+ adresse_cl);
         System.out.println("Type d'abonnement : "+ type_ab);

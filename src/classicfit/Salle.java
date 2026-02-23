@@ -170,6 +170,7 @@ public class Salle {
         Client client = new Client(adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
                 numero_tel, adresse_cl, type_ab, etat_ab, ID_cl);
         listeClient.add(client);
+        System.out.println(listeClient);
     }
 
     public void Consulter_infos(Client cl) {

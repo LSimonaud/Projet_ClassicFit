@@ -36,12 +36,9 @@ public class Client extends Utilisateur {
         this.date_naissance = date_naissance;
         this.numero_tel = numero_tel;
         this.adresse_cl = adresse;
-
         this.ID_cl = ID_cl;
-
         this.type_ab = type_ab;
         this.etat_ab = etat_ab;
-
         //Initialisation des listes
         listeCours_passes = new LinkedList<>();
         listeCours_futurs = new LinkedList<>();

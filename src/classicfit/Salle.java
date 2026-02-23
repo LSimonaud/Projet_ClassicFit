@@ -25,8 +25,8 @@ public class Salle {
     private LinkedList<Cours> listeCours; //liste des cours passés et futurs
     private LinkedList<Client> listeClient; //liste de tous les clients de la salle
 
-    private static final String FICHIER_CLIENTS = "Fichier_clients.txt"; //Fichier de sauvegarde des clients
-    private static final String FICHIER_COURS = "Fichier_cours.txt"; //Fichier de sauvegarde des cours
+    public static final String FICHIER_CLIENTS = "Fichier_clients.txt"; //Fichier de sauvegarde des clients
+    public static final String FICHIER_COURS = "Fichier_cours.txt"; //Fichier de sauvegarde des cours
 
     Scanner sc = new Scanner(System.in);
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -53,16 +53,18 @@ public class Salle {
             throw new IllegalArgumentException("Mot de passe invalide");
         }
 
-        if (admin.getemail().equalsIgnoreCase(email) && admin.getmdp().equalsIgnoreCase(mdp)) {
+        if (admin.getemail().equals(email) && admin.getmdp().equals(mdp)) {
             return admin;
         } else {
             for (Client cl : listeClient) {
-                if (cl.getemail().equalsIgnoreCase(email) && cl.getmdp().equalsIgnoreCase(mdp)) {
+                if (cl.getemail().equals(email) && cl.getmdp().equals(mdp)) {
+                    System.out.println("bienvenue cher client !");
                     return cl;
                 }
             }
         }
         throw new UserNotFoundException("Email ou mot de passe incorrect");
+       
     }
 
     public String mdp_oublie(String email) {
@@ -143,7 +145,7 @@ public class Salle {
         System.out.println("Veuillez selectionner un type d'abonnement : 1-trimestriel 2-semestriel 3-annuel");
         int rep = sc.nextInt();
         sc.nextLine();
-        if (rep != 1 || rep != 2 || rep != 3) {
+        if (rep != 1 && rep != 2 && rep != 3) {
             throw new IllegalArgumentException("Reponse invalide");
         }
         String type_ab = " ";
@@ -350,24 +352,30 @@ public class Salle {
         for (Client cl : listeClient) {
             fichCl.write(cl.toString());
             fichCl.write(sep);
-        }
-        fichCl.close();
+        }        
 
         FileWriter fichCo = new FileWriter(FICHIER_COURS);
         for (Cours co : listeCours) {
             fichCo.write(co.toString());
             fichCo.write(sep);
         }
+        
+        fichCl.close();
+        fichCo.close();
     }
 
     public void charger() throws FileNotFoundException, IOException {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
+        boolean fichierTrouve = false;
+        while(fichierTrouve == false){
+            try{
         FileReader fichCl = new FileReader(FICHIER_CLIENTS);
         BufferedReader br = new BufferedReader(fichCl);
-        String ligne = br.readLine();
-        while (ligne != null) {
-            String[] tab = ligne.split(";");
+        String ligne = br.readLine();       
+  
+          
+            String[] tab = ligne.trim().split("\\s*:\\s*"); //supprime espaces inutiles
+                   
             String addresse_mail = tab[0];
             String mdp = tab[1];
             String nom_cl = tab[2];
@@ -382,14 +390,21 @@ public class Salle {
             Client cl = new Client(addresse_mail, mdp, nom_cl, prenom_cl, date_naissance, numero_tel,
                     addresse_cl, type_ab, etat_ab, numero_cl);
             listeClient.add(cl);
-            ligne = br.readLine();
+            br.close();
+            fichierTrouve = true;
+            }catch(FileNotFoundException ex){
+                System.out.println("fichier introuvable");
+                break;
+            }
         }
+        
 
-        FileReader fichCo = new FileReader(FICHIER_COURS);
+      /*  FileReader fichCo = new FileReader(FICHIER_COURS);
         BufferedReader br2 = new BufferedReader(fichCo);
-        ligne = br2.readLine();
+        String ligne = br2.readLine();
         while (ligne != null) {
             String[] tab = ligne.split(";");
         }
+        fichCo.close(); */
     }
 }

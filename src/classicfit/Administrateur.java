@@ -24,16 +24,7 @@ public class Administrateur extends Utilisateur {
         return super.toString() + ";" + nom_admin + ";" + prenom_admin;
     }
 
-    public void desactiver_abonnement() {
 
-    }
-
-    public void reactiver_abonnement() {
-
-    }
-
-    public void lister_cours() {
-
-    }
+    
 
 }

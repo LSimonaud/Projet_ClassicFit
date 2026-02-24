@@ -180,10 +180,13 @@ public class Salle {
         cl.affichage_infos();
     }
 
-    public void Modifier_infos(Client cl) throws IllegalArgumentException {
+    public void Modifier_infos_client(Client cl) throws IllegalArgumentException {
         System.out.println("Que souhaitez-vous modifier : 1-Nom 2-Prenom 3-Date de naissance 4-Numero de telephone 5-Addresse 6-Type d'abonnement");
         int choix = sc.nextInt();
         sc.nextLine();
+        if (choix != 1 && choix != 2 && choix != 3 && choix != 4 && choix != 5 && choix != 6) {
+            throw new IllegalArgumentException("Reponse invalide");
+        }
         switch (choix) {
             case 1 -> {
                 System.out.println("Entrer un nouveau Nom :");
@@ -235,7 +238,7 @@ public class Salle {
                 System.out.println("Selectionner un nouveau Type d'abonnement : 1-trimestriel 2-semestriel 3-annuel");
                 int i = sc.nextInt();
                 sc.nextLine();
-                if (i != 1 || i != 2 || i != 3) {
+                if (i != 1 && i != 2 && i != 3) {
                     throw new IllegalArgumentException("Reponse invalide");
                 }
                 switch (i) {
@@ -258,6 +261,29 @@ public class Salle {
                 break;
             }
         }
+    }
+
+    public void Inscription_client(Client cl, Cours co) throws DejaInscritException {
+        try {
+            co.ajouter_inscription(cl);
+            cl.ajouterCours_listeFutur(co);
+            System.out.println("Votre inscription au cours "+co.getNom_cours()+" a bien ete enregistre.");
+        } catch (DejaInscritException e) {
+            e.getMessage();
+        }
+    }
+    
+    public void Desincription_client(Client cl,Cours co){
+        co.retirer_inscription(cl);
+        cl.retirerCours_listeFutur(co);
+    }
+    
+    public void Consulter_listeCours_futur(Client cl){
+        cl.affichage_listeFutur();
+    }
+    
+    public void Consulter_listeCours_passe(Client cl){
+        cl.affichage_listePasse();
     }
 
     public void Consulter_listeClient() {
@@ -315,7 +341,7 @@ public class Salle {
         System.out.println("Selectionner le type de cours : 1-Individuel 2-Collectif");
         int choix = sc.nextInt();
         sc.nextLine();
-        if (choix != 1 || choix != 2) {
+        if (choix != 1 && choix != 2) {
             throw new IllegalArgumentException("Reponse invalide");
         }
         String type_co = " ";
@@ -343,9 +369,103 @@ public class Salle {
         listeCours.add(cours);
     }
 
+    public void Supprimer_cours(Cours co) {
+        listeCours.remove(co);
+    }
+
     public void Consulter_listeCours() {
         for (Cours co : listeCours) {
             System.out.println(co.affichage_liste());
+        }
+    }
+
+    public Cours Rechercher_cours_ID(int ID) throws UserNotFoundException {
+        if (ID <= 0) {
+            throw new IllegalArgumentException("ID invalide");
+        }
+        for (Cours co : listeCours) {
+            if (co.getID_cours() == ID) {
+                return co;
+            }
+        }
+        throw new UserNotFoundException("Cours avec ID " + ID + " introuvable.");
+    }
+
+    public Cours Rechercher_cours_nom(String nom) throws UserNotFoundException {
+        if (nom == null || nom.trim().isEmpty() || !nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9'’()\\- ]{3,50}$")) {
+            throw new IllegalArgumentException("Nom invalide");
+        }
+        for (Cours co : listeCours) {
+            if (co.getNom_cours().equalsIgnoreCase(nom)) {
+                return co;
+            }
+        }
+        throw new UserNotFoundException("Nom de cours " + nom + " introuvable.");
+    }
+
+    public void Modifier_infos_cours(Cours co) throws IllegalArgumentException {
+        System.out.println("Que souhaitez-vous modifier : 1-Nom 2-Nombre de place 3-Type de cours 4-Date 5-Duree");
+        int choix = sc.nextInt();
+        sc.nextLine();
+        if (choix != 1 && choix != 2 && choix != 3 && choix != 4 && choix != 5) {
+            throw new IllegalArgumentException("Reponse invalide");
+        }
+        switch (choix) {
+            case 1 -> {
+                System.out.println("Entrer un nouveau Nom :");
+                String new_nom = sc.nextLine();
+                if (new_nom == null || new_nom.trim().isEmpty() || !new_nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9'’()\\- ]{3,50}$")) {
+                    throw new IllegalArgumentException("Nom invalide");
+                }
+                System.out.println(co.modifier_nom(new_nom));
+                break;
+            }
+            case 2 -> {
+                System.out.println("Entrer un nouveau Nombre de place :");
+                int new_nbre = sc.nextInt();
+                sc.nextLine();
+                if (new_nbre <= 0) {
+                    throw new IllegalArgumentException("Nombre de place invalide");
+                }
+                System.out.println(co.modifier_nbrePlace(new_nbre));
+                break;
+            }
+            case 3 -> {
+                System.out.println("Selectionner un nouveau type de cours : 1-Individuel 2-Collectif");
+                int i = sc.nextInt();
+                sc.nextLine();
+                if (i != 1 && choix != 2) {
+                    throw new IllegalArgumentException("Reponse invalide");
+                }
+                String type_co = "";
+                if (i == 1) {
+                    type_co = "individuel";
+                } else {
+                    type_co = "collectif";
+                }
+                System.out.println(co.modifier_typeCours(type_co));
+                break;
+            }
+            case 4 -> {
+                System.out.println("Entrer une nouvelle Date (dd-MM-yyyy):");
+                String new_date = sc.nextLine();
+                if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+                    throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
+                }
+                LocalDate new_date_co = LocalDate.parse(new_date, format);
+                System.out.println(co.modifier_date(new_date_co));
+                break;
+            }
+            case 5 -> {
+                System.out.println("Entrer une nouvelle Duree :");
+                int new_duree = sc.nextInt();
+                sc.nextLine();
+                if (new_duree <= 0) {
+                    throw new IllegalArgumentException("Duree invalide");
+                }
+                System.out.println(co.modifier_duree(new_duree));
+                break;
+            }
         }
     }
 
@@ -367,7 +487,7 @@ public class Salle {
         fichCo.close();
     }
 
-    public void charger() throws FileNotFoundException, IOException {
+    public void charger() throws FileNotFoundException, IOException, DejaInscritException {
         boolean fichierTrouve1 = false;
         while (fichierTrouve1 == false) {
             try {
@@ -376,7 +496,7 @@ public class Salle {
                 String ligne = br.readLine();
                 while (ligne != null) {
                     String[] tab = ligne.trim().split(";");
-                    
+
                     int numero_cl = Integer.parseInt(tab[0]);
                     String addresse_mail = tab[1];
                     String mdp = tab[2];
@@ -430,7 +550,7 @@ public class Salle {
                 break;
             }
         }
-/*
+
         boolean fichierTrouve2 = false;
         while (fichierTrouve2 == false) {
             try {
@@ -438,9 +558,17 @@ public class Salle {
                 BufferedReader br2 = new BufferedReader(fichCo);
                 String ligne = br2.readLine();
                 while (ligne != null) {
-                    String[] tab = ligne.trim().split(";");
-                    
-                    
+                    String[] tab = ligne.trim().split(",");
+
+                    int ID_co = Integer.parseInt(tab[0]);
+                    String nom_co = tab[1];
+                    int nbre_place = Integer.parseInt(tab[2]);
+                    String type_co = tab[3];
+                    LocalDate date_co = LocalDate.parse(tab[4], format);
+                    int duree_co = Integer.parseInt(tab[5]);
+
+                    Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
+                    listeCours.add(co);
                 }
                 br2.close();
                 fichierTrouve2 = true;
@@ -448,6 +576,13 @@ public class Salle {
                 System.out.println("fichier introuvable");
                 break;
             }
-        }*/
+        }
+        for (Cours co : listeCours) {
+            for (Client cl : listeClient) {
+                if (cl.getlistePasse_client().contains(co) || cl.getlisteFutur_client().contains(co)) {
+                    co.ajouter_inscription(cl);
+                }
+            }
+        }
     }
 }

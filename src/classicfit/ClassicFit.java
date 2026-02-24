@@ -7,6 +7,7 @@ AA
  */
 package classicfit;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ import java.util.Scanner;
  */
 public class ClassicFit {
 
-    public static void main(String[] args) throws UserNotFoundException, IOException {
+    public static void main(String[] args) throws UserNotFoundException, IOException, FileNotFoundException, DejaInscritException {
         Scanner sc = new Scanner(System.in);
         Administrateur a = new Administrateur("admin@epfedu.fr","admin1234","Inshape","Tibo");
         Salle s = new Salle("classicfit",a);

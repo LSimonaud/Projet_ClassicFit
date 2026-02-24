@@ -111,6 +111,42 @@ public class Client extends Utilisateur {
         return this.nom_cl;
     }
     
+    public LinkedList getlistePasse_client(){
+        return this.listeCours_passes;
+    }
+    
+    public LinkedList getlisteFutur_client(){
+        return this.listeCours_passes;
+    }
+    
+    public void affichage_listePasse(){
+        for (Cours co : listeCours_passes){
+            System.out.println(co.affichage_liste());
+        }
+    }
+    
+    public void affichage_listeFutur(){
+        for (Cours co : listeCours_futurs){
+            System.out.println(co.affichage_liste());
+        }
+    }
+    
+    public void ajouterCours_listePasse(Cours co){
+        this.listeCours_passes.add(co);
+    }
+    
+    public void ajouterCours_listeFutur(Cours co){
+        this.listeCours_futurs.add(co);
+    }
+    
+    public void retirerCours_listePasse(Cours co){
+        this.listeCours_passes.remove(co);
+    }
+    
+    public void retirerCours_listeFutur(Cours co){
+        this.listeCours_futurs.remove(co);
+    }
+    
     public String affichage_liste(){
         return nom_cl + " " + prenom_cl + " ID : " + String.valueOf(ID_cl);
     }

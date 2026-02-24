@@ -402,6 +402,19 @@ public class Salle {
         }
         throw new UserNotFoundException("Nom de cours " + nom + " introuvable.");
     }
+    
+    public Cours Rechercher_cours_date(LocalDate date) throws UserNotFoundException {
+        String date_recherche = date.format(format);
+        if (date_recherche == null || date_recherche.trim().isEmpty() || !date_recherche.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+            throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
+        }
+        for (Cours co : listeCours) {
+            if(co.getDate_cours().equals(date)){
+                return co;
+            }
+        }
+        throw new UserNotFoundException("Aucun cours à la date " + nom + " prévu.");
+    }
 
     public void Modifier_infos_cours(Cours co) throws IllegalArgumentException {
         System.out.println("Que souhaitez-vous modifier : 1-Nom 2-Nombre de place 3-Type de cours 4-Date 5-Duree");
@@ -581,6 +594,17 @@ public class Salle {
             for (Client cl : listeClient) {
                 if (cl.getlistePasse_client().contains(co) || cl.getlisteFutur_client().contains(co)) {
                     co.ajouter_inscription(cl);
+                }
+            }
+        }
+    }
+    
+    public void actualiser(){
+        for (Client cl : listeClient){
+            for (Cours co : cl.getlisteFutur_client()){
+                if(co.verification_date()==true){
+                    cl.retirerCours_listeFutur(co);
+                    cl.ajouterCours_listePasse(co);
                 }
             }
         }

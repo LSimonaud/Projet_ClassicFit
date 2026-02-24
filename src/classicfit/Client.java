@@ -58,7 +58,7 @@ public class Client extends Utilisateur {
     public String Affichage_listeCours_client(LinkedList<Cours> listeCours){
         String liste = "";
         for (Cours co : listeCours){
-            liste = liste+co.affichage_listeCours_client()+"|";
+            liste = liste+co.toString()+"|";
         }
         return liste;
     }
@@ -111,12 +111,12 @@ public class Client extends Utilisateur {
         return this.nom_cl;
     }
     
-    public LinkedList getlistePasse_client(){
-        return this.listeCours_passes;
+    public LinkedList<Cours> getlistePasse_client(){
+        return listeCours_passes;
     }
     
-    public LinkedList getlisteFutur_client(){
-        return this.listeCours_passes;
+    public LinkedList<Cours> getlisteFutur_client(){
+        return listeCours_futurs;
     }
     
     public void affichage_listePasse(){

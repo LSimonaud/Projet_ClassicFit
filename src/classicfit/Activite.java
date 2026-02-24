@@ -3,6 +3,8 @@
  */
 package classicfit;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author lucsi
@@ -10,9 +12,13 @@ package classicfit;
 public class Activite {
 
     private String nom; //nom de l'activité
+    
+    private LinkedList<Cours> listeCours_activite; //liste des cours associés à une activite
 
     public Activite(String nom) {
         this.nom = nom;
+        
+        listeCours_activite = new LinkedList<>();
     }
 
     @Override
@@ -20,15 +26,4 @@ public class Activite {
         return nom;
     }
 
-    public void lister_activite() {
-        
-    }
-
-    public void inscription_activite() {
-
-    }
-
-    public void desinscription_activite() {
-
-    }
 }

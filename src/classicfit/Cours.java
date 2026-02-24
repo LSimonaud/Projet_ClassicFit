@@ -53,6 +53,10 @@ public class Cours {
         return this.nom_co;
     }
     
+    public LocalDate getDate_cours(){
+        return date_co;
+    }
+    
     public String modifier_nom(String nom){
         this.nom_co = nom;
         return "Nom : "+nom_co;
@@ -78,11 +82,6 @@ public class Cours {
         return "Duree : "+String.valueOf(duree_co);
     }
     
-    public String affichage_listeCours_client() {
-        return String.valueOf(ID_co) + "," + nom_co + "," + String.valueOf(nbre_place) + "," + type_co + 
-                "," + date_co.format(format) + "," + String.valueOf(duree_co);
-    }
-    
     public String affichage_liste(){
         return String.valueOf(ID_co)+" "+nom_co+" "+type_co+" "+String.valueOf(nbre_place)+" places "+
                 date_co.format(format)+" "+String.valueOf(duree_co)+" minutes "+String.valueOf(liste_inscrits.size())
@@ -100,8 +99,8 @@ public class Cours {
         this.liste_inscrits.remove(cl);
     }
 
-    public void verification_date() {
-
+    public boolean verification_date() {
+        return this.date_co.isBefore(LocalDate.now());
     }
 
 }

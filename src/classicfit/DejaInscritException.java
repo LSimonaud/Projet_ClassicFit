@@ -9,6 +9,7 @@ package classicfit;
  * @author lucsi
  */
 public class DejaInscritException extends Exception {
+
     public DejaInscritException(String message) {
         super(message);
     }

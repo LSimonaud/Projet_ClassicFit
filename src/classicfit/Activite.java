@@ -12,12 +12,12 @@ import java.util.LinkedList;
 public class Activite {
 
     private String nom; //nom de l'activité
-    
+
     private LinkedList<Cours> listeCours_activite; //liste des cours associés à une activite
 
     public Activite(String nom) {
         this.nom = nom;
-        
+
         listeCours_activite = new LinkedList<>();
     }
 

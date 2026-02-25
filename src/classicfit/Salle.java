@@ -45,24 +45,23 @@ public class Salle {
         return "Nom de la salle :" + nom;
     }
 
-    public Utilisateur seConnecter(String email, String mdp) throws UserNotFoundException {
+    public String seConnecter(String email, String mdp) throws UserNotFoundException {
         if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             throw new IllegalArgumentException("Adresse mail invalide");
         }
-        if (mdp == null || mdp.trim().isEmpty()) {
+        if (mdp == null || mdp.trim().isEmpty() || !mdp.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&,.#:;\\-_/])[A-Za-z\\d@$!%*?&,.#:;\\-_/]{12,}$")) {
             throw new IllegalArgumentException("Mot de passe invalide");
         }
 
         if (admin.getemail().equals(email) && admin.getmdp().equals(mdp)) {
-            return admin;
-        } else {
-            for (Client cl : listeClient) {
-                if (cl.getemail().equals(email) && cl.getmdp().equals(mdp)) {
-                    System.out.println("bienvenue cher client !");
-                    return cl;
-                }
+            return "administrateur";
+        }
+        for (Client cl : listeClient) {
+            if (cl.getemail().equals(email) && cl.getmdp().equals(mdp)) {
+                return "client";
             }
         }
+
         throw new UserNotFoundException("Email ou mot de passe incorrect");
 
     }
@@ -84,11 +83,10 @@ public class Salle {
         return "Email incorrect";
     }
 
-    public void Modifier_mdp() {
+    public void Modifier_mdp(String email) {
         System.out.println("Entrez le nouveau mot de passe");
         String nouv_mdp = sc.nextLine();
         String nouv_mdp1 = "a";
-        String email = sc.nextLine();
         while (!nouv_mdp.equals(nouv_mdp1)) {
             System.out.println("Verifiaction de mot de passe : Entrez de nouveau le mot de passe");
             nouv_mdp1 = sc.nextLine();
@@ -101,7 +99,7 @@ public class Salle {
     }
 
     public void Creer_compte() throws IllegalArgumentException {
-
+        System.out.println(listeClient);
         System.out.println("Entrer une adresse mail :");
         String adresse_mail = sc.nextLine();
         if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
@@ -173,7 +171,7 @@ public class Salle {
         Client client = new Client(ID_cl, adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
                 numero_tel, adresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
         listeClient.add(client);
-        System.out.println(listeClient);
+        
     }
 
     public void Consulter_infos(Client cl) {
@@ -267,22 +265,22 @@ public class Salle {
         try {
             co.ajouter_inscription(cl);
             cl.ajouterCours_listeFutur(co);
-            System.out.println("Votre inscription au cours "+co.getNom_cours()+" a bien ete enregistre.");
+            System.out.println("Votre inscription au cours " + co.getNom_cours() + " a bien ete enregistre.");
         } catch (DejaInscritException e) {
             e.getMessage();
         }
     }
-    
-    public void Desincription_client(Client cl,Cours co){
+
+    public void Desincription_client(Client cl, Cours co) {
         co.retirer_inscription(cl);
         cl.retirerCours_listeFutur(co);
     }
-    
-    public void Consulter_listeCours_futur(Client cl){
+
+    public void Consulter_listeCours_futur(Client cl) {
         cl.affichage_listeFutur();
     }
-    
-    public void Consulter_listeCours_passe(Client cl){
+
+    public void Consulter_listeCours_passe(Client cl) {
         cl.affichage_listePasse();
     }
 
@@ -402,14 +400,14 @@ public class Salle {
         }
         throw new UserNotFoundException("Nom de cours " + nom + " introuvable.");
     }
-    
+
     public Cours Rechercher_cours_date(LocalDate date) throws UserNotFoundException {
         String date_recherche = date.format(format);
         if (date_recherche == null || date_recherche.trim().isEmpty() || !date_recherche.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
         for (Cours co : listeCours) {
-            if(co.getDate_cours().equals(date)){
+            if (co.getDate_cours().equals(date)) {
                 return co;
             }
         }
@@ -485,14 +483,14 @@ public class Salle {
     public void sauvegarder() throws IOException {
         String sep = System.lineSeparator();
 
-        FileWriter fichCl = new FileWriter(FICHIER_CLIENTS);
+        FileWriter fichCl = new FileWriter(FICHIER_CLIENTS, true);
         for (Client cl : listeClient) {
             fichCl.write(cl.toString());
             fichCl.write(sep);
         }
         fichCl.close();
 
-        FileWriter fichCo = new FileWriter(FICHIER_COURS);
+        FileWriter fichCo = new FileWriter(FICHIER_COURS, true);
         for (Cours co : listeCours) {
             fichCo.write(co.toString());
             fichCo.write(sep);
@@ -502,13 +500,18 @@ public class Salle {
 
     public void charger() throws FileNotFoundException, IOException, DejaInscritException {
         boolean fichierTrouve1 = false;
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         while (fichierTrouve1 == false) {
             try {
                 FileReader fichCl = new FileReader(FICHIER_CLIENTS);
                 BufferedReader br = new BufferedReader(fichCl);
-                String ligne = br.readLine();
-                while (ligne != null) {
-                    String[] tab = ligne.trim().split(";");
+                String ligne;                                
+                while ((ligne = br.readLine()) != null) {
+                    String ligne2 = br.readLine(); //lire une ligne
+                    if (ligne2 == null) {
+                        break;
+                    }                                    
+                    String[] tab = ligne.split(";"); //supprime espaces inutiles
 
                     int numero_cl = Integer.parseInt(tab[0]);
                     String addresse_mail = tab[1];
@@ -522,44 +525,51 @@ public class Salle {
                     String etat_ab = tab[9];
 
                     LinkedList<Cours> listeCours_passe = new LinkedList<>();
-                    String[] tab2 = tab[10].trim().split("\\|");
-                    for (int i = 0; i < tab2.length; i++) {
-                        String[] tab3 = tab2[i].trim().split(",");
-                        int ID_co = Integer.parseInt(tab3[0]);
-                        String nom_co = tab3[1];
-                        int nbre_place = Integer.parseInt(tab3[2]);
-                        String type_co = tab3[3];
-                        LocalDate date_co = LocalDate.parse(tab3[4], format);
-                        int duree_co = Integer.parseInt(tab3[5]);
 
-                        Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
-                        listeCours_passe.add(co);
+                    if (tab.length > 10 && !tab[10].trim().isEmpty()) {
+
+                        String[] tab2 = tab[10].split("\\|");
+
+                        for (int i = 0; i < tab2.length; i++) {
+
+                            String[] tab3 = tab2[i].split(",");                       
+                            int ID_co = Integer.parseInt(tab3[0]);
+                            String nom_co = tab3[1];
+                            int nbre_place = Integer.parseInt(tab3[2]);
+                            String type_co = tab3[3];
+                            LocalDate date_co = LocalDate.parse(tab3[4]);
+                            int duree_co = Integer.parseInt(tab3[5]);
+
+                            Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
+                            listeCours_passe.add(co);
+                        }
                     }
 
                     LinkedList<Cours> listeCours_futur = new LinkedList<>();
-                    String[] tab4 = tab[11].trim().split("\\|");
-                    for (int i = 0; i < tab4.length; i++) {
-                        String[] tab5 = tab2[i].trim().split(",");
-                        int ID_co = Integer.parseInt(tab5[0]);
-                        String nom_co = tab5[1];
-                        int nbre_place = Integer.parseInt(tab5[2]);
-                        String type_co = tab5[3];
-                        LocalDate date_co = LocalDate.parse(tab5[4], format);
-                        int duree_co = Integer.parseInt(tab5[5]);
 
-                        Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
-                        listeCours_futur.add(co);
+                    if (tab.length > 11 && !tab[11].trim().isEmpty()) {
+                        String[] tab4 = tab[11].split("\\|");
+                        for (int i = 0; i < tab4.length; i++) {
+                            String[] tab5 = tab4[i].split(",");
+                            int ID_co = Integer.parseInt(tab5[0]);
+                            String nom_co = tab5[1];
+                            int nbre_place = Integer.parseInt(tab5[2]);
+                            String type_co = tab5[3];
+                            LocalDate date_co = LocalDate.parse(tab5[4]);
+                            int duree_co = Integer.parseInt(tab5[5]);
+
+                            Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
+                            listeCours_futur.add(co);
+                        }
                     }
-
                     Client cl = new Client(numero_cl, addresse_mail, mdp, nom_cl, prenom_cl, date_naissance, numero_tel,
                             addresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
                     listeClient.add(cl);
-                    ligne = br.readLine();
                 }
                 br.close();
                 fichierTrouve1 = true;
             } catch (FileNotFoundException ex) {
-                System.out.println("fichier introuvable");
+                System.out.println("creation du fichier des clients");
                 break;
             }
         }
@@ -586,7 +596,7 @@ public class Salle {
                 br2.close();
                 fichierTrouve2 = true;
             } catch (FileNotFoundException ex) {
-                System.out.println("fichier introuvable");
+                System.out.println("creation du fichier des cours");
                 break;
             }
         }
@@ -598,11 +608,11 @@ public class Salle {
             }
         }
     }
-    
-    public void actualiser(){
-        for (Client cl : listeClient){
-            for (Cours co : cl.getlisteFutur_client()){
-                if(co.verification_date()==true){
+
+    public void actualiser() {
+        for (Client cl : listeClient) {
+            for (Cours co : cl.getlisteFutur_client()) {
+                if (co.verification_date() == true) {
                     cl.retirerCours_listeFutur(co);
                     cl.ajouterCours_listePasse(co);
                 }

@@ -27,11 +27,11 @@ public class Client extends Utilisateur {
 
     private LinkedList<Cours> listeCours_passes;
     private LinkedList<Cours> listeCours_futurs;
-    
+
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public Client(int ID_cl, String email, String mdp, String nom, String prenom, LocalDate date_naissance,
-            String numero_tel, String adresse, String type_ab, String etat_ab, 
+            String numero_tel, String adresse, String type_ab, String etat_ab,
             LinkedList<Cours> listeCours_passes, LinkedList<Cours> listeCours_futurs) {
         super(email, mdp);
         this.nom_cl = nom;
@@ -49,114 +49,114 @@ public class Client extends Utilisateur {
 
     @Override
     public String toString() {
-        return String.valueOf(ID_cl) + ";" + super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance.format(format) + ";"
+        return ID_cl + ";" + super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance + ";"
                 + numero_tel + ";" + adresse_cl + ";" + type_ab + ";"
                 + etat_ab + ";" + this.Affichage_listeCours_client(listeCours_passes) + ";"
                 + this.Affichage_listeCours_client(listeCours_futurs);
     }
-    
-    public String Affichage_listeCours_client(LinkedList<Cours> listeCours){
+
+    public String Affichage_listeCours_client(LinkedList<Cours> listeCours) {
         String liste = "";
-        for (Cours co : listeCours){
-            liste = liste+co.toString()+"|";
+        for (Cours co : listeCours) {
+            liste = liste + co.toString() + "|";
         }
         return liste;
     }
-    
-    public String modifier_nom(String nom){
+
+    public String modifier_nom(String nom) {
         this.nom_cl = nom;
-        return "Nom : "+nom_cl;
+        return "Nom : " + nom_cl;
     }
-    
-    public String modifier_prenom(String prenom){
+
+    public String modifier_prenom(String prenom) {
         this.prenom_cl = prenom;
-        return "Prenom : "+prenom_cl;
+        return "Prenom : " + prenom_cl;
     }
-    
-    public String modifier_date_naissance(LocalDate date){
+
+    public String modifier_date_naissance(LocalDate date) {
         this.date_naissance = date;
-        return "Date de naissance : "+date_naissance.format(format);
+        return "Date de naissance : " + date_naissance.format(format);
     }
-    
-    public String modifier_numero_telephone(String numtel){
+
+    public String modifier_numero_telephone(String numtel) {
         this.numero_tel = numtel;
-        return "Numero de telephone : "+numero_tel;
+        return "Numero de telephone : " + numero_tel;
     }
-    
-    public String modifier_adresse(String adresse){
+
+    public String modifier_adresse(String adresse) {
         this.adresse_cl = adresse;
-        return "Addresse : "+adresse_cl;
+        return "Addresse : " + adresse_cl;
     }
-    
-    public String modifier_abonnement(String abonnement){
+
+    public String modifier_abonnement(String abonnement) {
         this.type_ab = abonnement;
-        return "Type d'abonnement : "+type_ab;
+        return "Type d'abonnement : " + type_ab;
     }
-    
-    public String modifier_etat_abonnement(){
-        if (etat_ab.equalsIgnoreCase("actif")){
+
+    public String modifier_etat_abonnement() {
+        if (etat_ab.equalsIgnoreCase("actif")) {
             etat_ab = "inactif";
-            return "Etat abonnement : "+etat_ab;
-        }else{
+            return "Etat abonnement : " + etat_ab;
+        } else {
             etat_ab = "actif";
-            return "Etat abonnement : "+etat_ab;
+            return "Etat abonnement : " + etat_ab;
         }
     }
-    
-    public int getID_client(){
+
+    public int getID_client() {
         return this.ID_cl;
     }
-    
-    public String getnom_client(){
+
+    public String getnom_client() {
         return this.nom_cl;
     }
-    
-    public LinkedList<Cours> getlistePasse_client(){
+
+    public LinkedList<Cours> getlistePasse_client() {
         return listeCours_passes;
     }
-    
-    public LinkedList<Cours> getlisteFutur_client(){
+
+    public LinkedList<Cours> getlisteFutur_client() {
         return listeCours_futurs;
     }
-    
-    public void affichage_listePasse(){
-        for (Cours co : listeCours_passes){
+
+    public void affichage_listePasse() {
+        for (Cours co : listeCours_passes) {
             System.out.println(co.affichage_liste());
         }
     }
-    
-    public void affichage_listeFutur(){
-        for (Cours co : listeCours_futurs){
+
+    public void affichage_listeFutur() {
+        for (Cours co : listeCours_futurs) {
             System.out.println(co.affichage_liste());
         }
     }
-    
-    public void ajouterCours_listePasse(Cours co){
+
+    public void ajouterCours_listePasse(Cours co) {
         this.listeCours_passes.add(co);
     }
-    
-    public void ajouterCours_listeFutur(Cours co){
+
+    public void ajouterCours_listeFutur(Cours co) {
         this.listeCours_futurs.add(co);
     }
-    
-    public void retirerCours_listePasse(Cours co){
+
+    public void retirerCours_listePasse(Cours co) {
         this.listeCours_passes.remove(co);
     }
-    
-    public void retirerCours_listeFutur(Cours co){
+
+    public void retirerCours_listeFutur(Cours co) {
         this.listeCours_futurs.remove(co);
     }
-    
-    public String affichage_liste(){
+
+    public String affichage_liste() {
         return nom_cl + " " + prenom_cl + " ID : " + String.valueOf(ID_cl);
     }
-    
-    public void affichage_infos(){
-        System.out.println("Nom : "+nom_cl);
-        System.out.println("Prenom : "+prenom_cl);
-        System.out.println("Date de naissance : "+ date_naissance.format(format));
-        System.out.println("Numero de telephone : "+ numero_tel);
-        System.out.println("Adresse : "+ adresse_cl);
-        System.out.println("Type d'abonnement : "+ type_ab);
+
+    public void affichage_infos() {
+        System.out.println("Nom : " + nom_cl);
+        System.out.println("Prenom : " + prenom_cl);
+        System.out.println("Date de naissance : " + date_naissance.format(format));
+        System.out.println("Numero de telephone : " + numero_tel);
+        System.out.println("Adresse : " + adresse_cl);
+        System.out.println("Type d'abonnement : " + type_ab);
     }
 }

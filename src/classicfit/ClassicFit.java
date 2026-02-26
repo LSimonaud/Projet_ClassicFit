@@ -26,7 +26,7 @@ public class ClassicFit {
         System.out.println("Etes-vous nouveau chez nous ?");
         String etat = sc.nextLine();
         switch (etat) {
-            case "Oui", "oui":
+            case "Oui", "oui" -> {
                 boolean valide = false;
                 while (valide == false) {
                     try {
@@ -38,31 +38,35 @@ public class ClassicFit {
                     }
                 }
                 System.out.println("Que desirez-vous faire ?");
-                break;
+            }
 
-            case "non", "Non":
+            case "non", "Non" -> {
+                System.out.println("Veuillez vous connecter");
                 boolean b = false;
-                while (b == false) {
+                while (b == false) {                    
                     System.out.println("adresse mail :");
                     String mail = sc.nextLine();
                     System.out.println("mot de passe :");
                     String mdp = sc.nextLine();
                     try {
                         switch (s.seConnecter(mail, mdp)) {
-                            case "administrateur":
-                                System.out.println("bienvenue cher administrateur");
-                                break;
-
-                            case "client":
+                            case "administrateur" -> {
+                                System.out.println("bienvenue Tibo !");
+                            }
+                            case "client" -> {
                                 System.out.println("bienvenue cher client !");
+                            }
                         }
                         b = true;
                     } catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
+                        System.out.println("Veuillez reessayer");
                     } catch (IllegalArgumentException f) {
                         System.out.println(f.getMessage());
+                        System.out.println("Veuillez reessayer");
                     }
                 }
+            }
         }
         s.sauvegarder();
     }

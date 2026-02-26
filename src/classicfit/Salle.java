@@ -22,6 +22,7 @@ public class Salle {
 
     private final String nom; //Nom de la salle de sport
     private final Administrateur admin; //Administrateur de la salle
+    private int clientdapres = 1;
     private LinkedList<Cours> listeCours; //liste des cours passés et futurs
     private LinkedList<Client> listeClient; //liste de tous les clients de la salle
 
@@ -105,6 +106,11 @@ public class Salle {
         if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             throw new IllegalArgumentException("Adresse mail invalide");
         }
+        for (Client cl : listeClient) {
+            if (cl.getemail().equalsIgnoreCase(adresse_mail)) {
+                throw new IllegalArgumentException("Un compte contient déjà cette adresse mail");
+            }
+        }
         System.out.println("Definir un mot de passe (12 caracteres minimum, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractere speciale):");
         String mdp = sc.nextLine();
         if (mdp == null || mdp.trim().isEmpty() || !mdp.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&,.#:;\\-_/])[A-Za-z\\d@$!%*?&,.#:;\\-_/]{12,}$")) {
@@ -163,7 +169,7 @@ public class Salle {
         }
         String etat_ab = "actif";
 
-        int ID_cl = listeClient.size() + 1;
+        int ID_cl = clientdapres++;
 
         LinkedList<Cours> listeCours_passe = new LinkedList<>();
         LinkedList<Cours> listeCours_futur = new LinkedList<>();
@@ -171,7 +177,7 @@ public class Salle {
         Client client = new Client(ID_cl, adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
                 numero_tel, adresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
         listeClient.add(client);
-        
+
     }
 
     public void Consulter_infos(Client cl) {
@@ -483,14 +489,14 @@ public class Salle {
     public void sauvegarder() throws IOException {
         String sep = System.lineSeparator();
 
-        FileWriter fichCl = new FileWriter(FICHIER_CLIENTS, true);
+        FileWriter fichCl = new FileWriter(FICHIER_CLIENTS);
         for (Client cl : listeClient) {
             fichCl.write(cl.toString());
             fichCl.write(sep);
         }
         fichCl.close();
 
-        FileWriter fichCo = new FileWriter(FICHIER_COURS, true);
+        FileWriter fichCo = new FileWriter(FICHIER_COURS);
         for (Cours co : listeCours) {
             fichCo.write(co.toString());
             fichCo.write(sep);
@@ -505,15 +511,18 @@ public class Salle {
             try {
                 FileReader fichCl = new FileReader(FICHIER_CLIENTS);
                 BufferedReader br = new BufferedReader(fichCl);
-                String ligne;                                
+                String ligne;
                 while ((ligne = br.readLine()) != null) {
-                    String ligne2 = br.readLine(); //lire une ligne
-                    if (ligne2 == null) {
+
+                    if (ligne == null) {
                         break;
-                    }                                    
+                    }
                     String[] tab = ligne.split(";"); //supprime espaces inutiles
 
                     int numero_cl = Integer.parseInt(tab[0]);
+                    if (numero_cl >= clientdapres) {
+                        clientdapres = numero_cl + 1;
+                    }
                     String addresse_mail = tab[1];
                     String mdp = tab[2];
                     String nom_cl = tab[3];
@@ -532,7 +541,7 @@ public class Salle {
 
                         for (int i = 0; i < tab2.length; i++) {
 
-                            String[] tab3 = tab2[i].split(",");                       
+                            String[] tab3 = tab2[i].split(",");
                             int ID_co = Integer.parseInt(tab3[0]);
                             String nom_co = tab3[1];
                             int nbre_place = Integer.parseInt(tab3[2]);

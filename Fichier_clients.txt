@@ -1,4 +1,3 @@
-1;fabian@gmail.com;Ezartyu6842*;Ruiz;Fabian;1996-11-05;0725536104;24 rue des mitards;trimestriel;actif;;
-1;kyks@gmail.com;Quairt6875*2;Mbappe;Kyks;2009-04-21;0622354851;20 Avenue Foch;annuel;actif;;
-1;fabian@gmail.com;Ezartyu6842*;Ruiz;Fabian;1996-11-05;0725536104;24 rue des mitards;trimestriel;actif;;
-1;fabian@gmail.com;Ezartyu6842*;Ruiz;Fabian;1996-11-05;0725536104;24 rue des mitards;trimestriel;actif;;
+1;dupont@outlook.fr;Duponte1234*;Dupont;Pierre;2001-05-05;0624551034;2 rue Victor Hugo;semestriel;actif;;
+2;tuchat@gmail.com;tuchatT1425*;Artista;Quevedo;1997-09-08;0655102403;5 rue Ferando;trimestriel;actif;;
+3;benito@free.fr;BenitoAnt25*;Antonio;Benito;1991-06-28;0752310045;86 Avenue des artistes;annuel;actif;;

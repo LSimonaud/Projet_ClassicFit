@@ -84,22 +84,36 @@ public class Salle {
         return "Email incorrect";
     }
 
-    public void Modifier_mdp(String email) {
-        System.out.println("Entrez le nouveau mot de passe");
-        String nouv_mdp = sc.nextLine();
-        String nouv_mdp1 = "a";
-        while (!nouv_mdp.equals(nouv_mdp1)) {
-            System.out.println("Verifiaction de mot de passe : Entrez de nouveau le mot de passe");
-            nouv_mdp1 = sc.nextLine();
+    public void Modifier_addresseMail(Client cl) {
+        System.out.println("Entrer une nouvelle addresse mail :");
+        String new_email = sc.nextLine();
+        if (new_email == null || new_email.trim().isEmpty() || !new_email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new IllegalArgumentException("Adresse mail invalide");
         }
-        for (Utilisateur name : listeClient) {
-            if (name.getemail() == email) {
-                nouv_mdp1 = name.getmdp();
-            }
+        cl.modifier_addresseMail(new_email);
+    }
+
+    public void Modifier_mdp(String mdp) throws IllegalArgumentException {
+        System.out.println("Entrez un nouveau mot de passe (12 caracteres minimum, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractere speciale):");
+        String new_mdp = sc.nextLine();
+        if (new_mdp == null || new_mdp.trim().isEmpty() || !new_mdp.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&,.#:;\\-_/])[A-Za-z\\d@$!%*?&,.#:;\\-_/]{12,}$")) {
+            throw new IllegalArgumentException("Mot de passe invalide");
+        }
+        String new_mdpConfirm = " ";
+        while (!new_mdpConfirm.equals(new_mdp)) {
+            System.out.println("Confirmer le nouveau mot de passe :");
+            new_mdpConfirm = sc.nextLine();
+        }
+        try {
+            Client cl = this.Rechercher_client_mdp(mdp);
+            cl.modifier_mdp(new_mdp);
+        } catch (UserNotFoundException e) {
+            e.getMessage();
+            System.out.println("Veuillez reesayer");
         }
     }
 
-    public void Creer_compte() throws IllegalArgumentException {
+    public Client Creer_compte() throws IllegalArgumentException {
         System.out.println("Entrer une adresse mail :");
         String adresse_mail = sc.nextLine();
         if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
@@ -176,6 +190,7 @@ public class Salle {
         Client client = new Client(ID_cl, adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
                 numero_tel, adresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
         listeClient.add(client);
+        return client;
 
     }
 
@@ -247,17 +262,17 @@ public class Salle {
                 switch (i) {
                     case 1 -> {
                         String new_type_ab = "trimestriel";
-                        cl.modifier_abonnement(new_type_ab);
+                        System.out.println(cl.modifier_abonnement(new_type_ab));
                         break;
                     }
                     case 2 -> {
                         String new_type_ab = "semestriel";
-                        cl.modifier_abonnement(new_type_ab);
+                        System.out.println(cl.modifier_abonnement(new_type_ab));
                         break;
                     }
                     case 3 -> {
                         String new_type_ab = "annuel";
-                        cl.modifier_abonnement(new_type_ab);
+                        System.out.println(cl.modifier_abonnement(new_type_ab));
                         break;
                     }
                 }
@@ -313,6 +328,18 @@ public class Salle {
         }
         for (Client cl : listeClient) {
             if (cl.getnom_client().equalsIgnoreCase(nom)) {
+                return cl;
+            }
+        }
+        throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
+    }
+
+    public Client Rechercher_client_mdp(String mdp) throws UserNotFoundException {
+        if (mdp == null || mdp.trim().isEmpty() || !mdp.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&,.#:;\\-_/])[A-Za-z\\d@$!%*?&,.#:;\\-_/]{12,}$")) {
+            throw new IllegalArgumentException("Mot de passe invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getmdp().equalsIgnoreCase(mdp)) {
                 return cl;
             }
         }

@@ -96,10 +96,10 @@ public class Client extends Utilisateur {
     public String modifier_etat_abonnement() {
         if (etat_ab.equalsIgnoreCase("actif")) {
             etat_ab = "inactif";
-            return "Etat abonnement : " + etat_ab;
+            return "Etat abonnement de M." + this.nom_cl + ": " + etat_ab;
         } else {
             etat_ab = "actif";
-            return "Etat abonnement : " + etat_ab;
+            return "Etat abonnement de M." + this.nom_cl + ": " + etat_ab;
         }
     }
 
@@ -109,6 +109,14 @@ public class Client extends Utilisateur {
 
     public String getnom_client() {
         return this.nom_cl;
+    }
+
+    public String getTel_client() {
+        return this.numero_tel;
+    }
+
+    public String getEtat_abonnement() {
+        return this.etat_ab;
     }
 
     public LinkedList<Cours> getlistePasse_client() {

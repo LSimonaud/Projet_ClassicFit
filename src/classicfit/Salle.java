@@ -100,7 +100,6 @@ public class Salle {
     }
 
     public void Creer_compte() throws IllegalArgumentException {
-        System.out.println(listeClient);
         System.out.println("Entrer une adresse mail :");
         String adresse_mail = sc.nextLine();
         if (adresse_mail == null || adresse_mail.trim().isEmpty() || !adresse_mail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
@@ -320,8 +319,35 @@ public class Salle {
         throw new UserNotFoundException("Nom de client " + nom + " introuvable.");
     }
 
+    public Client Rechercher_client_email(String email) throws UserNotFoundException {
+        if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new IllegalArgumentException("Adresse mail invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getemail().equalsIgnoreCase(email)) {
+                return cl;
+            }
+        }
+        System.out.println("adresse email " + email + " introuvable");
+        return null;
+    }
+
+    public Client Rechercher_client_telephone(String telephone) throws UserNotFoundException {
+        if (telephone == null || telephone.trim().isEmpty() || !telephone.matches("^\\d{10}$")) {
+            throw new IllegalArgumentException("Numero de telephone invalide");
+        }
+        for (Client cl : listeClient) {
+            if (cl.getTel_client().equalsIgnoreCase(telephone)) {
+                return cl;
+            }
+        }
+        System.out.println("numero de telephone " + telephone + " introuvable");
+        return null;
+    }
+
     public void Desactiver_abonnement(String nom) throws UserNotFoundException {
         Client cl = this.Rechercher_client_nom(nom);
+
         System.out.println(cl.modifier_etat_abonnement());
     }
 

@@ -1,3 +1,3 @@
-1;dupont@outlook.fr;Duponte1234*;Dupont;Pierre;2001-05-05;0624551034;2 rue Victor Hugo;semestriel;actif;;
+1;dupont@outlook.fr;Duponte1234*;Dupont;Pierre;2001-05-05;0624551034;2 rue Victor Hugo;semestriel;inactif;;
 2;tuchat@gmail.com;tuchatT1425*;Artista;Quevedo;1997-09-08;0655102403;5 rue Ferando;trimestriel;actif;;
 3;benito@free.fr;BenitoAnt25*;Antonio;Benito;1991-06-28;0752310045;86 Avenue des artistes;annuel;actif;;

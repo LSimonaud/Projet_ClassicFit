@@ -49,7 +49,7 @@ public class Client extends Utilisateur {
 
     @Override
     public String toString() {
-        return ID_cl + ";" + super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance + ";"
+        return ID_cl + ";" + super.toString() + ";" + nom_cl + ";" + prenom_cl + ";" + date_naissance.format(format) + ";"
                 + numero_tel + ";" + adresse_cl + ";" + type_ab + ";"
                 + etat_ab + ";" + this.Affichage_listeCours_client(listeCours_passes) + ";"
                 + this.Affichage_listeCours_client(listeCours_futurs);

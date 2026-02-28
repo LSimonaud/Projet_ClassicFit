@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -22,7 +23,6 @@ public class ClassicFit {
     public static void main(String[] args) throws UserNotFoundException, IOException, FileNotFoundException, DejaInscritException {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
         Administrateur a = new Administrateur("admin@epfedu.fr", "Admin123456*", "Inshape", "Tibo");
         Salle s = new Salle("classicfit", a);
         s.charger();
@@ -164,6 +164,9 @@ public class ClassicFit {
                                                             v = true;
                                                         } catch (IllegalArgumentException e) {
                                                             System.out.println(e.getMessage());
+                                                            System.out.println("Veuillez reesayer");
+                                                        } catch (InputMismatchException e) {
+                                                            System.out.println("Format invalide");
                                                             System.out.println("Veuillez reesayer");
                                                         }
                                                     }

@@ -41,8 +41,8 @@ public class Cours {
 
     @Override
     public String toString() {
-        return String.valueOf(ID_co) + "," + nom_co + "," + String.valueOf(nbre_place) + "," + type_co
-                + "," + date_co.format(format) + "," + String.valueOf(duree_co);
+        return ID_co + "," + nom_co + "," + nbre_place + "," + type_co
+                + "," + date_co.format(format) + "," + duree_co;
     }
 
     public int getID_cours() {

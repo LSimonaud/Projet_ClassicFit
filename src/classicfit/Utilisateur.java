@@ -30,13 +30,13 @@ public class Utilisateur {
     public String getemail() {
         return this.email;
     }
-    
-    public void modifier_addresseMail(String email){
+
+    public void modifier_addresseMail(String email) {
         this.email = email;
         System.out.println("Nouvelle addresse mail enregistree");
     }
-    
-    public void modifier_mdp(String mdp){
+
+    public void modifier_mdp(String mdp) {
         this.mdp = mdp;
         System.out.println("Nouveau mot de passe enregistre");
     }

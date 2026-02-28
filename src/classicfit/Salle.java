@@ -412,8 +412,9 @@ public class Salle {
         if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
+
         LocalDate date_co = LocalDate.parse(date, format);
-        System.out.println("Entrer la duree du cours :");
+        System.out.println("Entrer la duree du cours en minutes:");
         int duree_co = sc.nextInt();
         sc.nextLine();
         if (duree_co <= 0) {
@@ -559,7 +560,6 @@ public class Salle {
 
     public void charger() throws FileNotFoundException, IOException, DejaInscritException {
         boolean fichierTrouve1 = false;
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         while (fichierTrouve1 == false) {
             try {
                 FileReader fichCl = new FileReader(FICHIER_CLIENTS);
@@ -641,8 +641,11 @@ public class Salle {
             try {
                 FileReader fichCo = new FileReader(FICHIER_COURS);
                 BufferedReader br2 = new BufferedReader(fichCo);
-                String ligne = br2.readLine();
-                while (ligne != null) {
+                String ligne;
+                while ((ligne = br2.readLine()) != null) {
+                    if (ligne == null) {
+                        break;
+                    }
                     String[] tab = ligne.trim().split(",");
 
                     int ID_co = Integer.parseInt(tab[0]);

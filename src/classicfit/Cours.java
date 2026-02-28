@@ -52,9 +52,17 @@ public class Cours {
     public String getNom_cours() {
         return this.nom_co;
     }
+    
+    public int getNbrePlace_cours(){
+        return this.nbre_place;
+    }
 
     public LocalDate getDate_cours() {
-        return date_co;
+        return this.date_co;
+    }
+    
+    public LinkedList<Client> getListeInscrit_cours(){
+        return this.liste_inscrits;
     }
 
     public String modifier_nom(String nom) {

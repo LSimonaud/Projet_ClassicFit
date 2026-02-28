@@ -29,12 +29,12 @@ public class ClassicFit {
 
         System.out.println("Bienvenue a classicfit !");
         System.out.println("Etes-vous nouveau chez nous ?");
-        String decision = "oui";
+        String etat = sc.nextLine();
+        Boolean decision = true;
         Boolean client = false;
         Client cl = null;
-        String etat = sc.nextLine();
-        switch (etat) {
-            case "Oui", "oui" -> {
+        switch (etat.toLowerCase()) {
+            case "oui" -> {
                 boolean valide = false;
                 while (valide == false) {
                     try {
@@ -47,9 +47,10 @@ public class ClassicFit {
                 }
                 System.out.println("bienvenue cher client !");
                 client = true;
+                break;
             }
 
-            case "non", "Non" -> {
+            case "non" -> {
                 System.out.println("Veuillez vous connecter");
                 boolean b = false;
                 while (b == false) {
@@ -61,191 +62,305 @@ public class ClassicFit {
                         switch (s.seConnecter(mail, mdp)) {
                             case "administrateur" -> {
                                 System.out.println("bienvenue Tibo !");
-                                while (decision.equalsIgnoreCase("oui") || decision.equalsIgnoreCase("Oui")) {
-                                    System.out.println("Que desires-tu faire ?");
+                                while (decision == true) {
+                                    System.out.println("Menu");
                                     System.out.println("""
                                                        1-Gestion des clients
-                                                       2-Gestion des cours""");
+                                                       2-Gestion des cours
+                                                       3-Gestion des activites
+                                                       4-Se deconnecter""");
                                     String choix = sc.nextLine();
                                     switch (choix) {
                                         case "1" -> {
-                                            System.out.println("Selctionne une action :");
-                                            System.out.println("""
-                                                       1-Consulter les comptes des clients
+                                            Boolean retour = false;
+                                            while (retour == false) {
+                                                System.out.println("Selctionner une action :");
+                                                System.out.println("""
+                                                       1-Consulter la liste des clients
                                                        2-Rechercher des clients
-                                                       3-Reactiver/Desactiver un abonnement""");
-                                            String action = sc.nextLine();
-
-                                            switch (action) {
-                                                case "1" -> {
-                                                    s.Consulter_listeClient();
-                                                }
-                                                case "2" -> {
-                                                    System.out.println("Par quel moyen veux-tu filtrer ta recherche ? (ID,nom,email,telephone)");
-                                                    String filtre = sc.nextLine();
-                                                    boolean c = false;
-                                                    while (c == false) {
-                                                        try {
-                                                            if (filtre.equalsIgnoreCase("ID")) {
-                                                                System.out.println("Pour quel ID ?");
-                                                                int ID = sc.nextInt();
-                                                                sc.nextLine();
-                                                                System.out.println(s.Rechercher_client_ID(ID));
-                                                            }
-                                                            if (filtre.equalsIgnoreCase("nom")) {
-                                                                System.out.println("Pour quel nom ?");
-                                                                String nom = sc.nextLine();
-                                                                System.out.println(s.Rechercher_client_nom(nom));
-                                                            }
-                                                            if (filtre.equalsIgnoreCase("email")) {
-                                                                System.out.println("Pour quel email ?");
-                                                                String email = sc.nextLine();
-                                                                if (s.Rechercher_client_telephone(email) == null) {
-
-                                                                }
-                                                            }
-                                                            if (filtre.equalsIgnoreCase("telephone")) {
-                                                                System.out.println("Pour quel numero de telephone ?");
-                                                                String tel = sc.nextLine();
-                                                                if (s.Rechercher_client_telephone(tel) == null) {
-
-                                                                }
-                                                            }
-                                                            c = true;
-                                                        } catch (IllegalArgumentException f) {
-                                                            System.out.println(f.getMessage());
-                                                            System.out.println("Veuillez reessayer");
-                                                        } catch (UserNotFoundException e) {
-                                                            System.out.println(e.getMessage());
-                                                            System.out.println("Veuillez reessayer");
-                                                        }
+                                                       3-Reactiver/Desactiver un abonnement
+                                                       4-Retour""");
+                                                String action = sc.nextLine();
+                                                switch (action) {
+                                                    case "1" -> {
+                                                        s.Consulter_listeClient();
+                                                        break;
                                                     }
-                                                }
-                                                case "3" -> {
-                                                    boolean d = false;
-                                                    while (d == false) {
-                                                        System.out.println("Entrer le nom du client concerne :");
-                                                        String nom = sc.nextLine();
-                                                        try {
-                                                            System.out.println("Etat actuel de l'abonnement de M." + nom + ":" + "\n" + s.Rechercher_client_nom(nom).getEtat_abonnement() + "\n");
-                                                            System.out.println("Voulez_vous toujours modifier l'etat de cet abonnement ?");
-                                                            choix = sc.nextLine();
-                                                            if (choix.equalsIgnoreCase("Oui") || choix.equalsIgnoreCase("oui")) {
-                                                                s.Reactiver_abonnement(nom);
+                                                    case "2" -> {
+                                                        System.out.println("Par quel moyen veux-tu filtrer ta recherche ? (ID,nom,email,telephone)");
+                                                        String filtre = sc.nextLine();
+                                                        boolean c = false;
+                                                        while (c == false) {
+                                                            try {
+                                                                if (filtre.equalsIgnoreCase("ID")) {
+                                                                    System.out.println("Pour quel ID ?");
+                                                                    int ID = sc.nextInt();
+                                                                    sc.nextLine();
+                                                                    s.Rechercher_client_ID(ID).affichage_infos();
+                                                                }
+                                                                if (filtre.equalsIgnoreCase("nom")) {
+                                                                    System.out.println("Pour quel nom ?");
+                                                                    String nom = sc.nextLine();
+                                                                    for (Client CL : s.Rechercher_client_nom(nom)) {
+                                                                        CL.affichage_infos();
+                                                                    }
+                                                                }
+                                                                if (filtre.equalsIgnoreCase("email")) {
+                                                                    System.out.println("Pour quel email ?");
+                                                                    String email = sc.nextLine();
+                                                                    s.Rechercher_client_email(email).affichage_infos();
+                                                                }
+                                                                if (filtre.equalsIgnoreCase("telephone")) {
+                                                                    System.out.println("Pour quel numero de telephone ?");
+                                                                    String tel = sc.nextLine();
+                                                                    s.Rechercher_client_telephone(tel).affichage_infos();
+                                                                }
+                                                                c = true;
+                                                            } catch (IllegalArgumentException f) {
+                                                                System.out.println(f.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
                                                             }
-
-                                                            d = true;
-                                                        } catch (UserNotFoundException e) {
-                                                            System.out.println(e.getMessage());
-                                                            System.out.println("Veuillez reessayer");
                                                         }
+                                                        break;
+                                                    }
+                                                    case "3" -> {
+                                                        boolean d = false;
+                                                        while (d == false) {
+                                                            System.out.println("Entrer l'ID du client concerne :");
+                                                            int ID = sc.nextInt();
+                                                            sc.nextLine();
+                                                            try {
+                                                                System.out.println("Etat actuel de l'abonnement de M." + s.Rechercher_client_ID(ID).getnom_client() + ":" + "\n" + s.Rechercher_client_ID(ID).getEtat_abonnement() + "\n");
+                                                                System.out.println("Voulez_vous toujours modifier l'etat de cet abonnement ?");
+                                                                choix = sc.nextLine().toLowerCase();
+                                                                if (choix.equalsIgnoreCase("oui")) {
+                                                                    s.Reactiver_abonnement(ID);
+                                                                }
+                                                                d = true;
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "4" -> {
+                                                        retour = true;
+                                                        break;
                                                     }
                                                 }
                                             }
+                                            break;
                                         }
                                         case "2" -> {
-                                            System.out.println("Choisissez une action :");
-                                            System.out.println("""
+                                            Boolean retour = false;
+                                            while (retour == false) {
+                                                System.out.println("Choisissez une action :");
+                                                System.out.println("""
                                                                1-Consulter la liste des cours
                                                                2-Ajouter un cours
                                                                3-Supprimer un cours
                                                                4-Rechercher un cours
-                                                               5-Modifier les informations d'un cours""");
-                                            choix = sc.nextLine();
-                                            switch (choix) {
-                                                case "1" -> {
-                                                    s.Consulter_listeCours();
-                                                }
-                                                case "2" -> {
-                                                    Boolean v = false;
-                                                    while (v == false) {
-                                                        try {
-                                                            s.Ajouter_cours();
-                                                            v = true;
-                                                        } catch (IllegalArgumentException e) {
-                                                            System.out.println(e.getMessage());
-                                                            System.out.println("Veuillez reesayer");
-                                                        } catch (InputMismatchException e) {
-                                                            System.out.println("Format invalide");
-                                                            System.out.println("Veuillez reesayer");
+                                                               5-Modifier les informations d'un cours
+                                                               6-Consulter la liste des cours populaires
+                                                               7-Consulter la liste des cours impopulaires
+                                                               8-Retour""");
+                                                choix = sc.nextLine();
+                                                switch (choix) {
+                                                    case "1" -> {
+                                                        for (Cours co : s.Consulter_listeCours()) {
+                                                            System.out.println(co.affichage_liste());
                                                         }
+                                                        break;
                                                     }
-                                                }
-                                                case "3" -> {
-                                                    System.out.println("Entrer le nom du cours a supprimer :");
-                                                    String nom = sc.nextLine();
-                                                    Boolean v = false;
-                                                    while (v == false) {
-                                                        try {
-                                                            Cours co = s.Rechercher_cours_nom(nom);
-                                                            s.Supprimer_cours(co);
-                                                        } catch (UserNotFoundException e) {
-                                                            System.out.println(e.getMessage());
-                                                            System.out.println("Veuillez reesayer");
+                                                    case "2" -> {
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                s.Ajouter_cours();
+                                                                v = true;
+                                                            } catch (IllegalArgumentException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reesayer");
+                                                            } catch (InputMismatchException e) {
+                                                                System.out.println("Format invalide");
+                                                                System.out.println("Veuillez reesayer");
+                                                            }
                                                         }
+                                                        break;
                                                     }
-                                                }
-                                                case "4" -> {
-                                                    System.out.println("Par quel moyen veux-tu filtrer ta recherche ? (ID,nom,date)");
-                                                    String filtre = sc.nextLine();
-                                                    boolean c = false;
-                                                    while (c == false) {
-                                                        try {
-                                                            if (filtre.equalsIgnoreCase("ID")) {
-                                                                System.out.println("Pour quel ID ?");
-                                                                int ID = sc.nextInt();
-                                                                sc.nextLine();
-                                                                System.out.println(s.Rechercher_cours_ID(ID));
+                                                    case "3" -> {
+                                                        System.out.println("Entrer l'ID du cours a supprimer :");
+                                                        int ID = sc.nextInt();
+                                                        sc.nextLine();
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                Cours co = s.Rechercher_cours_ID(ID);
+                                                                System.out.println(s.Supprimer_cours(co));
+                                                                v = true;
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reesayer");
+                                                            } catch (IllegalArgumentException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reesayer");
                                                             }
-                                                            if (filtre.equalsIgnoreCase("nom")) {
-                                                                System.out.println("Pour quel nom ?");
-                                                                String nom = sc.nextLine();
-                                                                System.out.println(s.Rechercher_cours_nom(nom));
-                                                            }
-                                                            if (filtre.equalsIgnoreCase("date")) {
-                                                                System.out.println("Pour quel date (dd-MM-yyyy)?");
-                                                                String date = sc.nextLine();
-                                                                LocalDate Date = LocalDate.parse(date, format);
-                                                                System.out.println(s.Rechercher_cours_date(Date));
-                                                            }
-                                                            c = true;
-                                                        } catch (IllegalArgumentException f) {
-                                                            System.out.println(f.getMessage());
-                                                            System.out.println("Veuillez reessayer");
-                                                        } catch (UserNotFoundException e) {
-                                                            System.out.println(e.getMessage());
-                                                            System.out.println("Veuillez reessayer");
                                                         }
+                                                        break;
                                                     }
-                                                }
-                                                case "5" -> {
-                                                    System.out.println("Entrer le nom du cours a modifier :");
-                                                    String nom = sc.nextLine();
-                                                    Boolean v = false;
-                                                    while (v == false) {
-                                                        try {
-                                                            Cours co = s.Rechercher_cours_nom(nom);
-                                                            s.Modifier_infos_cours(co);
-                                                        } catch (IllegalArgumentException f) {
-                                                            System.out.println(f.getMessage());
-                                                            System.out.println("Veuillez reessayer");
-                                                        } catch (UserNotFoundException e) {
-                                                            System.out.println(e.getMessage());
-                                                            System.out.println("Veuillez reessayer");
+                                                    case "4" -> {
+                                                        System.out.println("Par quel moyen veux-tu filtrer ta recherche ? (ID,nom,date)");
+                                                        String filtre = sc.nextLine();
+                                                        boolean c = false;
+                                                        while (c == false) {
+                                                            try {
+                                                                if (filtre.equalsIgnoreCase("ID")) {
+                                                                    System.out.println("Pour quel ID ?");
+                                                                    int ID = sc.nextInt();
+                                                                    sc.nextLine();
+                                                                    System.out.println(s.Rechercher_cours_ID(ID));
+                                                                }
+                                                                if (filtre.equalsIgnoreCase("nom")) {
+                                                                    System.out.println("Pour quel nom ?");
+                                                                    String nom = sc.nextLine();
+                                                                    for (Cours co : s.Rechercher_cours_nom(nom)) {
+                                                                        System.out.println(co.affichage_liste());
+                                                                    }
+                                                                }
+                                                                if (filtre.equalsIgnoreCase("date")) {
+                                                                    System.out.println("Pour quel date (dd-MM-yyyy)?");
+                                                                    String date = sc.nextLine();
+                                                                    LocalDate Date = LocalDate.parse(date, format);
+                                                                    for (Cours CO : s.Rechercher_cours_date(Date)) {
+                                                                        System.out.println(CO.affichage_liste());
+                                                                    }
+                                                                }
+                                                                c = true;
+                                                            } catch (IllegalArgumentException f) {
+                                                                System.out.println(f.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
                                                         }
+                                                        break;
+                                                    }
+                                                    case "5" -> {
+                                                        System.out.println("Entrer l'ID du cours a modifier :");
+                                                        int ID = sc.nextInt();
+                                                        sc.nextLine();
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                Cours co = s.Rechercher_cours_ID(ID);
+                                                                s.Modifier_infos_cours(co);
+                                                                v = true;
+                                                            } catch (IllegalArgumentException f) {
+                                                                System.out.println(f.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "6" -> {
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                s.Consulter_coursPopulaire();
+                                                                System.out.println("Voulez-vous ajouter un cours populaire ?");
+                                                                String ajout = sc.nextLine();
+                                                                if (ajout.toLowerCase().equalsIgnoreCase("oui")) {
+                                                                    s.Ajouter_cours();
+                                                                }
+                                                                v = true;
+                                                            } catch (IllegalArgumentException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "7" -> {
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                s.Consulter_coursImpopulaire();
+                                                                System.out.println("Voulez-vous supprimer un cours impopulaire ?");
+                                                                String sup = sc.nextLine();
+                                                                if (sup.toLowerCase().equalsIgnoreCase("oui")) {
+                                                                    System.out.println("Entrer l'ID du cours à supprimer :");
+                                                                    int ID = sc.nextInt();
+                                                                    sc.nextLine();
+                                                                    Cours co = s.Rechercher_cours_ID(ID);
+                                                                    System.out.println(s.Supprimer_cours(co));
+                                                                }
+                                                                v = true;
+                                                            } catch (IllegalArgumentException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "8" -> {
+                                                        retour = true;
+                                                        break;
                                                     }
                                                 }
                                             }
+                                            break;
+                                        }
+                                        case "3" -> {
+                                            Boolean retour = false;
+                                            while (retour == false) {
+                                                System.out.println("Selectionner une action :");
+                                                System.out.println("""
+                                                                   1-Ajouter une activite""");
+                                                choix = sc.nextLine();
+                                                switch (choix) {
+                                                    case "1" -> {
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                s.Ajouter_activite();
+                                                                v = true;
+                                                            } catch (IllegalArgumentException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                        case "4" -> {
+                                            System.out.println("Vous avez ete deconnecte avec succes.");
+                                            decision = false;
+                                            break;
                                         }
                                     }
-                                    System.out.println("Veux-tu effectuer d'autres action ?");
-                                    decision = sc.nextLine();
                                 }
+                                break;
                             }
+
                             case "client" -> {
                                 System.out.println("bienvenue cher client !");
                                 cl = s.Rechercher_client_email(mail);
                                 client = true;
+                                break;
                             }
                         }
                         b = true;
@@ -257,92 +372,188 @@ public class ClassicFit {
                         System.out.println("Veuillez reessayer");
                     }
                 }
+                break;
+            }
+            default -> {
+                System.out.println("Reponse invalide");
             }
         }
 
         if (client == true) {
-            while (decision.equalsIgnoreCase("oui") || decision.equalsIgnoreCase("Oui")) {
-                System.out.println("Que desirez-vous faire ?");
+            while (decision == true) {
+                System.out.println("Menu :");
                 System.out.println("""
                                1-Espace Compte
-                               2-Espace Cours""");
+                               2-Espace Cours
+                               3-Espace Activite
+                               4-Se deconnecter""");
                 String choix = sc.nextLine();
                 switch (choix) {
                     case "1" -> {
-                        System.out.println("Selectionner une action :");
-                        System.out.println("""
+                        Boolean retour = false;
+                        while (retour == false) {
+                            System.out.println("Selectionner une action :");
+                            System.out.println("""
                                        1-Modifier mon addresse email
                                        2-Modifier mon mot de passe
                                        3-Consulter mes informations
-                                       4-Modifier mes informations""");
-                        choix = sc.nextLine();
-                        switch (choix) {
-                            case "1" -> {
-                                Boolean v = false;
-                                while (v == false) {
-                                    try {
-                                        s.Modifier_addresseMail(cl);
-                                    } catch (IllegalArgumentException e) {
-                                        System.out.println(e.getMessage());
-                                        System.out.println("Veuillez reesayer");
+                                       4-Modifier mes informations
+                                       5-Retour""");
+                            choix = sc.nextLine();
+                            switch (choix) {
+                                case "1" -> {
+                                    Boolean v = false;
+                                    while (v == false) {
+                                        try {
+                                            s.Modifier_addresseMail(cl);
+                                            v = true;
+                                        } catch (IllegalArgumentException e) {
+                                            System.out.println(e.getMessage());
+                                            System.out.println("Veuillez reesayer");
+                                        }
                                     }
+                                    break;
                                 }
-                            }
-                            case "2" -> {
-                                Boolean v = false;
-                                while (v == false) {
-                                    try {
-                                        System.out.println("Entrer votre mot de passe actuel :");
-                                        String mdp = sc.nextLine();
-                                        s.Modifier_mdp(mdp);
-                                    } catch (IllegalArgumentException e) {
-                                        System.out.println(e.getMessage());
-                                        System.out.println("Veuillez reesayer");
+                                case "2" -> {
+                                    Boolean v = false;
+                                    while (v == false) {
+                                        try {
+                                            System.out.println("Entrer votre mot de passe actuel :");
+                                            String mdp = sc.nextLine();
+                                            s.Modifier_mdp(mdp);
+                                            v = true;
+                                        } catch (IllegalArgumentException e) {
+                                            System.out.println(e.getMessage());
+                                            System.out.println("Veuillez reesayer");
+                                        }
                                     }
+                                    break;
                                 }
-                            }
-                            case "3" -> {
-                                s.Consulter_infos(cl);
-                            }
-                            case "4" -> {
-                                Boolean v = false;
-                                while (v == false) {
-                                    try {
-                                        s.Modifier_infos_client(cl);
-                                    } catch (IllegalArgumentException e) {
-                                        System.out.println(e.getMessage());
-                                        System.out.println("Veuillez reesayer");
+                                case "3" -> {
+                                    s.Consulter_infos(cl);
+                                    break;
+                                }
+                                case "4" -> {
+                                    Boolean v = false;
+                                    while (v == false) {
+                                        try {
+                                            s.Modifier_infos_client(cl);
+                                            v = true;
+                                        } catch (IllegalArgumentException e) {
+                                            System.out.println(e.getMessage());
+                                            System.out.println("Veuillez reesayer");
+                                        }
                                     }
+                                    break;
+                                }
+                                case "5" -> {
+                                    retour = true;
+                                    break;
                                 }
                             }
                         }
+                        break;
                     }
                     case "2" -> {
-                        System.out.println("Selectionner une action :");
-                        System.out.println("""
+                        Boolean retour = false;
+                        while (retour == false) {
+                            System.out.println("Selectionner une action :");
+                            System.out.println("""
                                        1-S'inscrire a un cours
                                        2-Se desincrire d'un cours
                                        3-Consulter vos prochains cours
-                                       4-Consulter vos cours passes""");
-                        choix = sc.nextLine();
-                        switch (choix) {
-                            case "1" -> {
-
-                            }
-                            case "2" -> {
-
-                            }
-                            case "3" -> {
-                                s.Consulter_listeCours_futur(cl);
-                            }
-                            case "4" -> {
-                                s.Consulter_listeCours_passe(cl);
+                                       4-Consulter vos cours passes
+                                       5-Retour""");
+                            choix = sc.nextLine();
+                            switch (choix) {
+                                case "1" -> {
+                                    Boolean v = false;
+                                    while (v == false) {
+                                        try {
+                                            for (Cours co : s.Consulter_listeCours()) {
+                                                if (co.getDate_cours().isAfter(LocalDate.now())) {
+                                                    System.out.println(co.affichage_liste());
+                                                }
+                                            }
+                                            System.out.println("Entrer l'ID du cours choisi :");
+                                            int ID = sc.nextInt();
+                                            sc.nextLine();
+                                            Cours CO = s.Rechercher_cours_ID(ID);
+                                            s.Inscription_client(cl, CO);
+                                            v = true;
+                                        } catch (UserNotFoundException e) {
+                                            System.out.println(e.getMessage());
+                                            System.out.println("Veuillez reessayer");
+                                        } catch (IllegalArgumentException f) {
+                                            System.out.println(f.getMessage());
+                                            System.out.println("Veuillez reessayer");
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "2" -> {
+                                    Boolean v = false;
+                                    while (v == false) {
+                                        try {
+                                            s.Consulter_listeCours_futur(cl);
+                                            System.out.println("Entrer l'ID du cours choisi :");
+                                            int ID = sc.nextInt();
+                                            sc.nextLine();
+                                            Cours co = s.Rechercher_cours_ID(ID);
+                                            s.Desincription_client(cl, co);
+                                            v = true;
+                                        } catch (UserNotFoundException e) {
+                                            System.out.println(e.getMessage());
+                                            System.out.println("Veuillez reessayer");
+                                        } catch (IllegalArgumentException f) {
+                                            System.out.println(f.getMessage());
+                                            System.out.println("Veuillez reessayer");
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "3" -> {
+                                    s.Consulter_listeCours_futur(cl);
+                                    break;
+                                }
+                                case "4" -> {
+                                    s.Consulter_listeCours_passe(cl);
+                                    break;
+                                }
+                                case "5" -> {
+                                    retour = true;
+                                    break;
+                                }
                             }
                         }
+                        break;
+                    }
+                    case "3" -> {
+                        Boolean retour = false;
+                        while (retour == false) {
+                            System.out.println("Selectionner une action :");
+                            System.out.println("""
+                                       1-Consulter la liste des activites
+                                       2-Retour""");
+                            choix = sc.nextLine();
+                            switch (choix) {
+                                case "1" -> {
+                                    s.Consulter_listeActivite();
+                                }
+                                case "2" -> {
+                                    retour = true;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case "4" -> {
+                        System.out.println("Vous avez ete deconnecte avec succes.");
+                        decision = false;
+                        break;
                     }
                 }
-                System.out.println("Veux-tu effectuer d'autres action ?");
-                decision = sc.nextLine();
             }
         }
         s.actualiser();

@@ -90,10 +90,15 @@ public class Cours {
         return "Duree : " + String.valueOf(duree_co);
     }
 
-    public String affichage_liste() {
-        return String.valueOf(ID_co) + " " + nom_co + " " + type_co + " " + String.valueOf(nbre_place) + " places "
-                + date_co.format(format) + " " + String.valueOf(duree_co) + " minutes " + String.valueOf(liste_inscrits.size())
+    public String affichage_listeAdmin() {
+        return "ID : "+String.valueOf(ID_co) + " | " + nom_co + " | " + type_co + " | " + String.valueOf(nbre_place) + " places | "
+                + date_co.format(format) + " | " + String.valueOf(duree_co) + " minutes | " + String.valueOf(liste_inscrits.size())
                 + " sur " + String.valueOf(nbre_place) + " inscits";
+    }
+    
+    public String affichage_listeClient() {
+        return "ID : "+String.valueOf(ID_co) + " | " + nom_co + " | " + type_co + " | " + String.valueOf(nbre_place) + " places | "
+                + date_co.format(format) + " | " + String.valueOf(duree_co) + " minutes ";
     }
 
     public void ajouter_inscription(Client cl) throws DejaInscritException {

@@ -129,13 +129,13 @@ public class Client extends Utilisateur {
 
     public void affichage_listePasse() {
         for (Cours co : listeCours_passes) {
-            System.out.println(co.affichage_liste());
+            System.out.println(co.affichage_listeClient());
         }
     }
 
     public void affichage_listeFutur() {
         for (Cours co : listeCours_futurs) {
-            System.out.println(co.affichage_liste());
+            System.out.println(co.affichage_listeClient());
         }
     }
 
@@ -166,5 +166,15 @@ public class Client extends Utilisateur {
         System.out.println("Numero de telephone : " + numero_tel);
         System.out.println("Adresse : " + adresse_cl);
         System.out.println("Type d'abonnement : " + type_ab);
+    }
+    
+    public void affichage_infosAdmin() {
+        System.out.println("Nom : " + nom_cl);
+        System.out.println("Prenom : " + prenom_cl);
+        System.out.println("Date de naissance : " + date_naissance.format(format));
+        System.out.println("Numero de telephone : " + numero_tel);
+        System.out.println("Adresse : " + adresse_cl);
+        System.out.println("Type d'abonnement : " + type_ab);
+        System.out.println("Etat de l'abonnement : " + etat_ab);
     }
 }

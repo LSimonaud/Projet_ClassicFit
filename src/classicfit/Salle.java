@@ -10,7 +10,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -61,11 +63,13 @@ public class Salle {
             return "administrateur";
         }
         for (Client cl : listeClient) {
-            if (cl.getemail().equals(email) && cl.getmdp().equals(mdp)) {
-                return "client";
+            if (cl.getemail().equals(email) && cl.getmdp().equals(mdp) && cl.getEtat_abonnement().equalsIgnoreCase("actif")) {
+                return "client autorise";
+            }
+            if (cl.getemail().equals(email) && cl.getmdp().equals(mdp) && cl.getEtat_abonnement().equalsIgnoreCase("inactif")) {
+                return "client interdit";
             }
         }
-
         throw new UserNotFoundException("Email ou mot de passe incorrect");
 
     }
@@ -150,7 +154,7 @@ public class Salle {
         if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
-        LocalDate date_naissance = LocalDate.parse(date, format);
+        LocalDate date_naissance = verifierDateNaissance(date,format);
 
         System.out.println("Numero de telephone :");
         String numero_tel = sc.nextLine();
@@ -198,6 +202,48 @@ public class Salle {
 
     }
 
+    public static LocalDate verifierDateNaissance(String dateStr, DateTimeFormatter format) {
+        //Vérification date correcte
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateStr, format);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("La date entree n'existe pas.");
+        }
+
+        // Vérifications logiques
+        LocalDate aujourdHui = LocalDate.now();
+        if (date.isAfter(aujourdHui)) {
+            throw new IllegalArgumentException("La date ne peut pas etre dans le futur.");
+        }
+
+        if (date.isBefore(LocalDate.of(1900, 1, 1))) {
+            throw new IllegalArgumentException("La date est trop ancienne.");
+        }
+
+        if (Period.between(date, aujourdHui).getYears() > 120) {
+            throw new IllegalArgumentException("L'age depasse 120 ans.");
+        }
+        return date;
+    }
+    
+    public static LocalDate verifierDateCours(String dateStr, DateTimeFormatter format) {
+        //Vérification date correcte
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateStr, format);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("La date entree n'existe pas.");
+        }
+
+        // Vérifications logiques
+        LocalDate aujourdHui = LocalDate.now();
+        if (date.isBefore(aujourdHui)) {
+            throw new IllegalArgumentException("La date ne peut pas etre dans le passe.");
+        }
+        return date;
+    }
+
     public void Consulter_infos(Client cl) {
         cl.affichage_infos();
     }
@@ -234,7 +280,7 @@ public class Salle {
                 if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
                     throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
                 }
-                LocalDate new_date_naissance = LocalDate.parse(new_date, format);
+                LocalDate new_date_naissance = verifierDateNaissance(new_date,format);
                 System.out.println(cl.modifier_date_naissance(new_date_naissance));
                 break;
             }
@@ -305,17 +351,19 @@ public class Salle {
     }
 
     public void Consulter_listeCours_futur(Client cl) {
-        if (cl.getlisteFutur_client() == null) {
+        if (cl.getlisteFutur_client().isEmpty()) {
             System.out.println("Vous n'avez pas de prochains cours");
         } else {
+            System.out.println("Liste de vos prochains cours :");
             cl.affichage_listeFutur();
         }
     }
 
     public void Consulter_listeCours_passe(Client cl) {
-        if (cl.getlistePasse_client() == null) {
+        if (cl.getlistePasse_client().isEmpty()) {
             System.out.println("Vous n'avez participe a aucun cours");
         } else {
+            System.out.println("Liste de vos cours precedents :");
             cl.affichage_listePasse();
         }
     }
@@ -432,8 +480,7 @@ public class Salle {
         if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
-
-        LocalDate date_co = LocalDate.parse(date, format);
+        LocalDate date_co = verifierDateCours(date,format);
         System.out.println("Entrer la duree du cours en minutes:");
         int duree_co = sc.nextInt();
         sc.nextLine();
@@ -448,7 +495,7 @@ public class Salle {
     }
 
     public String Supprimer_cours(Cours co) {
-        if (co.getListeInscrit_cours().size() > 0) {
+        if (co.getListeInscrit_cours().isEmpty()) {
             System.out.println("Etes-vous certain de vouloir supprimer le cours " + co.getNom_cours() + " ?");
             String rep = sc.nextLine();
             if (rep.toLowerCase().equalsIgnoreCase("oui")) {
@@ -512,7 +559,7 @@ public class Salle {
     }
 
     public void Modifier_infos_cours(Cours co) throws IllegalArgumentException {
-        if (co.getListeInscrit_cours().size() > 0) {
+        if (co.getListeInscrit_cours().isEmpty()) {
             System.out.println("Que souhaitez-vous modifier : 1-Nom 2-Nombre de place 3-Type de cours 4-Date 5-Duree");
             int choix = sc.nextInt();
             sc.nextLine();
@@ -561,7 +608,7 @@ public class Salle {
                     if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
                         throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
                     }
-                    LocalDate new_date_co = LocalDate.parse(new_date, format);
+                    LocalDate new_date_co = verifierDateCours(new_date, format);
                     System.out.println(co.modifier_date(new_date_co));
                     break;
                 }
@@ -584,7 +631,7 @@ public class Salle {
     public void Consulter_coursPopulaire() {
         for (Cours co : listeCours) {
             if ((co.getListeInscrit_cours().size() / co.getNbrePlace_cours()) >= 0.8) {
-                System.out.println(co.affichage_liste());
+                System.out.println(co.affichage_listeAdmin());
             }
         }
     }
@@ -592,7 +639,7 @@ public class Salle {
     public void Consulter_coursImpopulaire() {
         for (Cours co : listeCours) {
             if ((co.getListeInscrit_cours().size() / co.getNbrePlace_cours()) <= 0.2) {
-                System.out.println(co.affichage_liste());
+                System.out.println(co.affichage_listeAdmin());
             }
         }
     }
@@ -686,7 +733,7 @@ public class Salle {
                             String nom_co = tab3[1];
                             int nbre_place = Integer.parseInt(tab3[2]);
                             String type_co = tab3[3];
-                            LocalDate date_co = LocalDate.parse(tab3[4],format);
+                            LocalDate date_co = LocalDate.parse(tab3[4], format);
                             int duree_co = Integer.parseInt(tab3[5]);
 
                             Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
@@ -704,7 +751,7 @@ public class Salle {
                             String nom_co = tab5[1];
                             int nbre_place = Integer.parseInt(tab5[2]);
                             String type_co = tab5[3];
-                            LocalDate date_co = LocalDate.parse(tab5[4],format);
+                            LocalDate date_co = LocalDate.parse(tab5[4], format);
                             int duree_co = Integer.parseInt(tab5[5]);
 
                             Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);

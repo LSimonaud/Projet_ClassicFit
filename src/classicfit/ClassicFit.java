@@ -28,7 +28,7 @@ public class ClassicFit {
         s.charger();
 
         System.out.println("Bienvenue a classicfit !");
-        System.out.println("Etes-vous nouveau chez nous ?");
+        System.out.println("Etes-vous nouveau chez nous ? (oui/non)");
         String etat = sc.nextLine();
         Boolean decision = true;
         Boolean client = false;
@@ -39,6 +39,8 @@ public class ClassicFit {
                 while (valide == false) {
                     try {
                         cl = s.Creer_compte();
+                        s.sauvegarder();
+                        s.charger();
                         valide = true;
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
@@ -96,24 +98,24 @@ public class ClassicFit {
                                                                     System.out.println("Pour quel ID ?");
                                                                     int ID = sc.nextInt();
                                                                     sc.nextLine();
-                                                                    s.Rechercher_client_ID(ID).affichage_infos();
+                                                                    s.Rechercher_client_ID(ID).affichage_infosAdmin();
                                                                 }
                                                                 if (filtre.equalsIgnoreCase("nom")) {
                                                                     System.out.println("Pour quel nom ?");
                                                                     String nom = sc.nextLine();
                                                                     for (Client CL : s.Rechercher_client_nom(nom)) {
-                                                                        CL.affichage_infos();
+                                                                        CL.affichage_infosAdmin();
                                                                     }
                                                                 }
                                                                 if (filtre.equalsIgnoreCase("email")) {
                                                                     System.out.println("Pour quel email ?");
                                                                     String email = sc.nextLine();
-                                                                    s.Rechercher_client_email(email).affichage_infos();
+                                                                    s.Rechercher_client_email(email).affichage_infosAdmin();
                                                                 }
                                                                 if (filtre.equalsIgnoreCase("telephone")) {
                                                                     System.out.println("Pour quel numero de telephone ?");
                                                                     String tel = sc.nextLine();
-                                                                    s.Rechercher_client_telephone(tel).affichage_infos();
+                                                                    s.Rechercher_client_telephone(tel).affichage_infosAdmin();
                                                                 }
                                                                 c = true;
                                                             } catch (IllegalArgumentException f) {
@@ -133,11 +135,13 @@ public class ClassicFit {
                                                             int ID = sc.nextInt();
                                                             sc.nextLine();
                                                             try {
-                                                                System.out.println("Etat actuel de l'abonnement de M." + s.Rechercher_client_ID(ID).getnom_client() + ":" + "\n" + s.Rechercher_client_ID(ID).getEtat_abonnement() + "\n");
+                                                                System.out.println("Etat actuel de l'abonnement de " + s.Rechercher_client_ID(ID).getnom_client() + ":" + "\n" + s.Rechercher_client_ID(ID).getEtat_abonnement() + "\n");
                                                                 System.out.println("Voulez_vous toujours modifier l'etat de cet abonnement ?");
                                                                 choix = sc.nextLine().toLowerCase();
                                                                 if (choix.equalsIgnoreCase("oui")) {
                                                                     s.Reactiver_abonnement(ID);
+                                                                    s.sauvegarder();
+                                                                    s.charger();
                                                                 }
                                                                 d = true;
                                                             } catch (UserNotFoundException e) {
@@ -172,7 +176,7 @@ public class ClassicFit {
                                                 switch (choix) {
                                                     case "1" -> {
                                                         for (Cours co : s.Consulter_listeCours()) {
-                                                            System.out.println(co.affichage_liste());
+                                                            System.out.println(co.affichage_listeAdmin());
                                                         }
                                                         break;
                                                     }
@@ -181,6 +185,8 @@ public class ClassicFit {
                                                         while (v == false) {
                                                             try {
                                                                 s.Ajouter_cours();
+                                                                s.sauvegarder();
+                                                                s.charger();
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
                                                                 System.out.println(e.getMessage());
@@ -201,6 +207,8 @@ public class ClassicFit {
                                                             try {
                                                                 Cours co = s.Rechercher_cours_ID(ID);
                                                                 System.out.println(s.Supprimer_cours(co));
+                                                                s.sauvegarder();
+                                                                s.charger();
                                                                 v = true;
                                                             } catch (UserNotFoundException e) {
                                                                 System.out.println(e.getMessage());
@@ -222,13 +230,13 @@ public class ClassicFit {
                                                                     System.out.println("Pour quel ID ?");
                                                                     int ID = sc.nextInt();
                                                                     sc.nextLine();
-                                                                    System.out.println(s.Rechercher_cours_ID(ID));
+                                                                    System.out.println(s.Rechercher_cours_ID(ID).affichage_listeAdmin());
                                                                 }
                                                                 if (filtre.equalsIgnoreCase("nom")) {
                                                                     System.out.println("Pour quel nom ?");
                                                                     String nom = sc.nextLine();
                                                                     for (Cours co : s.Rechercher_cours_nom(nom)) {
-                                                                        System.out.println(co.affichage_liste());
+                                                                        System.out.println(co.affichage_listeAdmin());
                                                                     }
                                                                 }
                                                                 if (filtre.equalsIgnoreCase("date")) {
@@ -236,7 +244,7 @@ public class ClassicFit {
                                                                     String date = sc.nextLine();
                                                                     LocalDate Date = LocalDate.parse(date, format);
                                                                     for (Cours CO : s.Rechercher_cours_date(Date)) {
-                                                                        System.out.println(CO.affichage_liste());
+                                                                        System.out.println(CO.affichage_listeAdmin());
                                                                     }
                                                                 }
                                                                 c = true;
@@ -259,6 +267,8 @@ public class ClassicFit {
                                                             try {
                                                                 Cours co = s.Rechercher_cours_ID(ID);
                                                                 s.Modifier_infos_cours(co);
+                                                                s.sauvegarder();
+                                                                s.charger();
                                                                 v = true;
                                                             } catch (IllegalArgumentException f) {
                                                                 System.out.println(f.getMessage());
@@ -279,6 +289,8 @@ public class ClassicFit {
                                                                 String ajout = sc.nextLine();
                                                                 if (ajout.toLowerCase().equalsIgnoreCase("oui")) {
                                                                     s.Ajouter_cours();
+                                                                    s.sauvegarder();
+                                                                    s.charger();
                                                                 }
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
@@ -301,6 +313,8 @@ public class ClassicFit {
                                                                     sc.nextLine();
                                                                     Cours co = s.Rechercher_cours_ID(ID);
                                                                     System.out.println(s.Supprimer_cours(co));
+                                                                    s.sauvegarder();
+                                                                    s.charger();
                                                                 }
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
@@ -334,6 +348,8 @@ public class ClassicFit {
                                                         while (v == false) {
                                                             try {
                                                                 s.Ajouter_activite();
+                                                                s.sauvegarder();
+                                                                s.charger();
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
                                                                 System.out.println(e.getMessage());
@@ -356,10 +372,17 @@ public class ClassicFit {
                                 break;
                             }
 
-                            case "client" -> {
+                            case "client autorise" -> {
                                 System.out.println("bienvenue cher client !");
                                 cl = s.Rechercher_client_email(mail);
                                 client = true;
+                                break;
+                            }
+                            
+                            case "client interdit" -> {
+                                System.out.println("""
+                                                   Vous n'etes pas autorise a vous connecter.
+                                                   Pour plus d'informations veuillez contacter l'administrateur de la salle.""");
                                 break;
                             }
                         }
@@ -406,6 +429,8 @@ public class ClassicFit {
                                     while (v == false) {
                                         try {
                                             s.Modifier_addresseMail(cl);
+                                            s.sauvegarder();
+                                            s.charger();
                                             v = true;
                                         } catch (IllegalArgumentException e) {
                                             System.out.println(e.getMessage());
@@ -421,6 +446,8 @@ public class ClassicFit {
                                             System.out.println("Entrer votre mot de passe actuel :");
                                             String mdp = sc.nextLine();
                                             s.Modifier_mdp(mdp);
+                                            s.sauvegarder();
+                                            s.charger();
                                             v = true;
                                         } catch (IllegalArgumentException e) {
                                             System.out.println(e.getMessage());
@@ -438,6 +465,8 @@ public class ClassicFit {
                                     while (v == false) {
                                         try {
                                             s.Modifier_infos_client(cl);
+                                            s.sauvegarder();
+                                            s.charger();
                                             v = true;
                                         } catch (IllegalArgumentException e) {
                                             System.out.println(e.getMessage());
@@ -470,9 +499,10 @@ public class ClassicFit {
                                     Boolean v = false;
                                     while (v == false) {
                                         try {
+                                            System.out.println("Liste des prochains cours :");
                                             for (Cours co : s.Consulter_listeCours()) {
                                                 if (co.getDate_cours().isAfter(LocalDate.now())) {
-                                                    System.out.println(co.affichage_liste());
+                                                    System.out.println(co.affichage_listeClient());
                                                 }
                                             }
                                             System.out.println("Entrer l'ID du cours choisi :");
@@ -480,6 +510,8 @@ public class ClassicFit {
                                             sc.nextLine();
                                             Cours CO = s.Rechercher_cours_ID(ID);
                                             s.Inscription_client(cl, CO);
+                                            s.sauvegarder();
+                                            s.charger();
                                             v = true;
                                         } catch (UserNotFoundException e) {
                                             System.out.println(e.getMessage());
@@ -500,8 +532,19 @@ public class ClassicFit {
                                             int ID = sc.nextInt();
                                             sc.nextLine();
                                             Cours co = s.Rechercher_cours_ID(ID);
-                                            s.Desincription_client(cl, co);
-                                            v = true;
+                                            System.out.println("Etes-vous certain de vouloir vous desinscrire ?");
+                                            String rep = sc.nextLine();
+                                            if (rep.toLowerCase().equalsIgnoreCase("oui")) {
+                                                s.Desincription_client(cl, co);
+                                                s.sauvegarder();
+                                                s.charger();
+                                                System.out.println("Vous avez bien ete desinscrit du cours "+co.getNom_cours());
+                                                v = true;
+                                            }else{
+                                                System.out.println("Desinscription annule");
+                                                v=true;
+                                            }
+                                           
                                         } catch (UserNotFoundException e) {
                                             System.out.println(e.getMessage());
                                             System.out.println("Veuillez reessayer");

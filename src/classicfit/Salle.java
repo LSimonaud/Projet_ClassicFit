@@ -440,13 +440,7 @@ public class Salle {
         return null;
     }
 
-    public void Desactiver_abonnement(int ID) throws UserNotFoundException {
-        Client cl = this.Rechercher_client_ID(ID);
-
-        System.out.println(cl.modifier_etat_abonnement());
-    }
-
-    public void Reactiver_abonnement(int ID) throws UserNotFoundException {
+    public void Modifier_etatAbonnement(int ID) throws UserNotFoundException {
         Client cl = this.Rechercher_client_ID(ID);
         System.out.println(cl.modifier_etat_abonnement());
     }

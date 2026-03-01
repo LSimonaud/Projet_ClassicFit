@@ -139,7 +139,7 @@ public class ClassicFit {
                                                                 System.out.println("Voulez_vous toujours modifier l'etat de cet abonnement ?");
                                                                 choix = sc.nextLine().toLowerCase();
                                                                 if (choix.equalsIgnoreCase("oui")) {
-                                                                    s.Reactiver_abonnement(ID);
+                                                                    s.Modifier_etatAbonnement(ID);
                                                                     s.sauvegarder();
                                                                     s.charger();
                                                                 }

@@ -69,7 +69,7 @@ public class Salle {
         throw new UserNotFoundException("Email ou mot de passe incorrect");
 
     }
-
+/*
     public String mdp_oublie(String email) {
         if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             return "Adresse mail invalide";
@@ -86,7 +86,7 @@ public class Salle {
         }
         return "Email incorrect";
     }
-
+*/
     public void Modifier_addresseMail(Client cl) {
         System.out.println("Entrer une nouvelle addresse mail :");
         String new_email = sc.nextLine();

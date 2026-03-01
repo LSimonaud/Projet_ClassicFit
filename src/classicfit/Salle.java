@@ -69,7 +69,8 @@ public class Salle {
         throw new UserNotFoundException("Email ou mot de passe incorrect");
 
     }
-/*
+
+    /*
     public String mdp_oublie(String email) {
         if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             return "Adresse mail invalide";
@@ -86,7 +87,7 @@ public class Salle {
         }
         return "Email incorrect";
     }
-*/
+     */
     public void Modifier_addresseMail(Client cl) {
         System.out.println("Entrer une nouvelle addresse mail :");
         String new_email = sc.nextLine();
@@ -285,9 +286,9 @@ public class Salle {
     }
 
     public void Inscription_client(Client cl, Cours co) {
-        if (co.getListeInscrit_cours().size()==co.getNbrePlace_cours()) {
+        if (co.getListeInscrit_cours().size() == co.getNbrePlace_cours()) {
             System.out.println("Ce cours est complet");
-        }else{
+        } else {
             try {
                 co.ajouter_inscription(cl);
                 cl.ajouterCours_listeFutur(co);
@@ -304,11 +305,19 @@ public class Salle {
     }
 
     public void Consulter_listeCours_futur(Client cl) {
-        cl.affichage_listeFutur();
+        if (cl.getlisteFutur_client() == null) {
+            System.out.println("Vous n'avez pas de prochains cours");
+        } else {
+            cl.affichage_listeFutur();
+        }
     }
 
     public void Consulter_listeCours_passe(Client cl) {
-        cl.affichage_listePasse();
+        if (cl.getlistePasse_client() == null) {
+            System.out.println("Vous n'avez participe a aucun cours");
+        } else {
+            cl.affichage_listePasse();
+        }
     }
 
     public void Consulter_listeClient() {
@@ -677,7 +686,7 @@ public class Salle {
                             String nom_co = tab3[1];
                             int nbre_place = Integer.parseInt(tab3[2]);
                             String type_co = tab3[3];
-                            LocalDate date_co = LocalDate.parse(tab3[4]);
+                            LocalDate date_co = LocalDate.parse(tab3[4],format);
                             int duree_co = Integer.parseInt(tab3[5]);
 
                             Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
@@ -695,7 +704,7 @@ public class Salle {
                             String nom_co = tab5[1];
                             int nbre_place = Integer.parseInt(tab5[2]);
                             String type_co = tab5[3];
-                            LocalDate date_co = LocalDate.parse(tab5[4]);
+                            LocalDate date_co = LocalDate.parse(tab5[4],format);
                             int duree_co = Integer.parseInt(tab5[5]);
 
                             Cours co = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);

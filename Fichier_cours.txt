@@ -1,1 +1,8 @@
 1,Cours de Yoga,25,collectif,05-05-2026,60
+2,Crossfit,20,individuel,10-05-2026,50
+3,Seance de velo elliptique,15,individuel,12-05-2026,45
+4,Musculation,12,individuel,15-05-2026,55
+5,Cours de zumba,30,collectif,18-05-2026,60
+6,Aquagym,25,collectif,20-05-2026,40
+7,Cours de judo,18,collectif,22-05-2026,50
+8,Boxe anglaise,16,collectif,25-05-2026,55

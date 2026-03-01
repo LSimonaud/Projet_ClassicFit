@@ -285,12 +285,16 @@ public class Salle {
     }
 
     public void Inscription_client(Client cl, Cours co) {
-        try {
-            co.ajouter_inscription(cl);
-            cl.ajouterCours_listeFutur(co);
-            System.out.println("Votre inscription au cours " + co.getNom_cours() + " a bien ete enregistre.");
-        } catch (DejaInscritException e) {
-            e.getMessage();
+        if (co.getListeInscrit_cours().size()==co.getNbrePlace_cours()) {
+            System.out.println("Ce cours est complet");
+        }else{
+            try {
+                co.ajouter_inscription(cl);
+                cl.ajouterCours_listeFutur(co);
+                System.out.println("Votre inscription au cours " + co.getNom_cours() + " a bien ete enregistre.");
+            } catch (DejaInscritException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -758,12 +762,12 @@ public class Salle {
                         break;
                     }
                     String[] tab = ligne.split(";"); //supprime espaces inutiles
-                    
+
                     int ID_a = Integer.parseInt(tab[0]);
                     String nom_a = tab[1];
                     String description_a = tab[2];
-                    
-                    Activite a = new Activite(ID_a,nom_a,description_a);
+
+                    Activite a = new Activite(ID_a, nom_a, description_a);
                     listeActivite.add(a);
                 }
                 br3.close();

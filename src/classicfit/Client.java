@@ -55,6 +55,23 @@ public class Client extends Utilisateur {
                 + this.Affichage_listeCours_client(listeCours_futurs);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Client other = (Client) obj;
+        return this.ID_cl == other.ID_cl; // ou adresse mail, etc.
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(ID_cl); // même attribut que equals
+    }
+
     public String Affichage_listeCours_client(LinkedList<Cours> listeCours) {
         String liste = "";
         for (Cours co : listeCours) {
@@ -167,7 +184,7 @@ public class Client extends Utilisateur {
         System.out.println("Adresse : " + adresse_cl);
         System.out.println("Type d'abonnement : " + type_ab);
     }
-    
+
     public void affichage_infosAdmin() {
         System.out.println("Nom : " + nom_cl);
         System.out.println("Prenom : " + prenom_cl);

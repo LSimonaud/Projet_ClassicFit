@@ -74,7 +74,6 @@ public class Salle {
 
     }
 
- 
     public void Modifier_addresseMail(Client cl) {
         System.out.println("Entrer une nouvelle addresse mail :");
         String new_email = sc.nextLine();

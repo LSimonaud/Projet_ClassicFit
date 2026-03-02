@@ -85,6 +85,7 @@ public class ClassicFit {
                                                 String action = sc.nextLine();
                                                 switch (action) {
                                                     case "1" -> {
+                                                        System.out.println("Liste des clients :");
                                                         s.Consulter_listeClient();
                                                         break;
                                                     }
@@ -175,6 +176,7 @@ public class ClassicFit {
                                                 choix = sc.nextLine();
                                                 switch (choix) {
                                                     case "1" -> {
+                                                        System.out.println("Liste des cours :");
                                                         for (Cours co : s.Consulter_listeCours()) {
                                                             System.out.println(co.affichage_listeAdmin());
                                                         }
@@ -502,7 +504,7 @@ public class ClassicFit {
                                             System.out.println("Liste des prochains cours :");
                                             for (Cours co : s.Consulter_listeCours()) {
                                                 if (co.getDate_cours().isAfter(LocalDate.now())) {
-                                                    System.out.println(co.affichage_listeClient());
+                                                    System.out.println(co.affichage_listeAdmin());
                                                 }
                                             }
                                             System.out.println("Entrer l'ID du cours choisi :");
@@ -518,6 +520,9 @@ public class ClassicFit {
                                             System.out.println("Veuillez reessayer");
                                         } catch (IllegalArgumentException f) {
                                             System.out.println(f.getMessage());
+                                            System.out.println("Veuillez reessayer");
+                                        } catch (DejaInscritException e){
+                                            System.out.println(e.getMessage());
                                             System.out.println("Veuillez reessayer");
                                         }
                                     }

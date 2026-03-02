@@ -45,6 +45,23 @@ public class Cours {
                 + "," + date_co.format(format) + "," + duree_co;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Cours other = (Cours) obj;
+        return this.ID_co == other.ID_co;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(ID_co);
+    }
+
     public int getID_cours() {
         return this.ID_co;
     }
@@ -52,16 +69,16 @@ public class Cours {
     public String getNom_cours() {
         return this.nom_co;
     }
-    
-    public int getNbrePlace_cours(){
+
+    public int getNbrePlace_cours() {
         return this.nbre_place;
     }
 
     public LocalDate getDate_cours() {
         return this.date_co;
     }
-    
-    public LinkedList<Client> getListeInscrit_cours(){
+
+    public LinkedList<Client> getListeInscrit_cours() {
         return this.liste_inscrits;
     }
 
@@ -91,13 +108,13 @@ public class Cours {
     }
 
     public String affichage_listeAdmin() {
-        return "ID : "+String.valueOf(ID_co) + " | " + nom_co + " | " + type_co + " | " + String.valueOf(nbre_place) + " places | "
+        return "ID : " + String.valueOf(ID_co) + " | " + nom_co + " | " + type_co + " | " + String.valueOf(nbre_place) + " places | "
                 + date_co.format(format) + " | " + String.valueOf(duree_co) + " minutes | " + String.valueOf(liste_inscrits.size())
                 + " sur " + String.valueOf(nbre_place) + " inscits";
     }
-    
+
     public String affichage_listeClient() {
-        return "ID : "+String.valueOf(ID_co) + " | " + nom_co + " | " + type_co + " | " + String.valueOf(nbre_place) + " places | "
+        return "ID : " + String.valueOf(ID_co) + " | " + nom_co + " | " + type_co + " | " + String.valueOf(nbre_place) + " places | "
                 + date_co.format(format) + " | " + String.valueOf(duree_co) + " minutes ";
     }
 
@@ -105,11 +122,11 @@ public class Cours {
         if (this.liste_inscrits.contains(cl)) {
             throw new DejaInscritException("Vous etes deja inscrit a ce cours");
         }
-        this.liste_inscrits.add(cl);
+        liste_inscrits.add(cl);
     }
 
     public void retirer_inscription(Client cl) {
-        this.liste_inscrits.remove(cl);
+        liste_inscrits.remove(cl);
     }
 
     public boolean verification_date() {

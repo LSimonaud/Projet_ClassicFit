@@ -180,6 +180,7 @@ public class Salle {
         Client client = new Client(ID_cl, adresse_mail, mdp, nom_cl, prenom_cl, date_naissance,
                 numero_tel, adresse_cl, type_ab, etat_ab, listeCours_passe, listeCours_futur);
         listeClient.add(client);
+        System.out.println("Votre compte a bien ete cree");
         return client;
 
     }
@@ -329,7 +330,7 @@ public class Salle {
 
     public void Desincription_client(Client cl, Cours co) {
         if (cl.getlisteFutur_client().contains(co)) {
-            System.out.println("Etes-vous certain de vouloir vous desinscrire ?");
+            System.out.println("Etes-vous certain de vouloir vous desinscrire du cours "+co.getNom_cours()+" ? (oui/non)");
             String rep = sc.nextLine();
             if (rep.toLowerCase().equalsIgnoreCase("oui")) {
                 co.retirer_inscription(cl);
@@ -479,6 +480,7 @@ public class Salle {
 
         Cours cours = new Cours(ID_co, nom_co, nbre_place, type_co, date_co, duree_co);
         listeCours.add(cours);
+        System.out.println("Le cours "+cours.getNom_cours()+" a bien ete cree");
     }
 
     public String Supprimer_cours(Cours co) {
@@ -667,6 +669,7 @@ public class Salle {
 
         Activite a = new Activite(ID, nom, description);
         listeActivite.add(a);
+        System.out.println("L'activite "+a.getNom_activite()+" a bien ete cree");
     }
 
     public String Supprimer_activite(Activite a) {
@@ -674,7 +677,7 @@ public class Salle {
         String rep = sc.nextLine();
         if (rep.toLowerCase().equalsIgnoreCase("oui")) {
             listeActivite.remove(a);
-            return "L'activite " + a.getNom_activite() + " a bien ete supprime";
+            return "L'activite " + a.getNom_activite() + " a bien ete supprimee";
         } else {
             return "Operation annulee";
         }

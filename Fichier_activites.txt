@@ -4,4 +4,4 @@
 4;Basket;Sport rapide ou on marque en lancant un ballon dans un panier en hauteur
 5;Rugby;Sport de contact utilisant un ballon ovale pour marquer des essais
 6;Handball;Jeu dynamique ou on marque en lancant un ballon a la main dans le but adverse
-7;Biathlon;Sport melange
+7;Biathlon;Sport qui melange ski de fond et tir de precision

@@ -257,12 +257,12 @@ public class ClassicFit {
                                                         break;
                                                     }
                                                     case "5" -> {
-                                                        System.out.println("Entrer l'ID du cours a modifier :");
-                                                        int ID = sc.nextInt();
-                                                        sc.nextLine();
                                                         Boolean v = false;
                                                         while (v == false) {
                                                             try {
+                                                                System.out.println("Entrer l'ID du cours a modifier :");
+                                                                int ID = sc.nextInt();
+                                                                sc.nextLine();
                                                                 Cours co = s.Rechercher_cours_ID(ID);
                                                                 s.Modifier_infos_cours(co);
                                                                 s.sauvegarder();
@@ -417,12 +417,12 @@ public class ClassicFit {
                                                         break;
                                                     }
                                                     case "5" -> {
-                                                        System.out.println("Entrer l'ID de l'activite a modifier :");
-                                                        int ID = sc.nextInt();
-                                                        sc.nextLine();
                                                         Boolean v = false;
                                                         while (v == false) {
                                                             try {
+                                                                System.out.println("Entrer l'ID de l'activite a modifier :");
+                                                                int ID = sc.nextInt();
+                                                                sc.nextLine();
                                                                 Activite act = s.Rechercher_activite_ID(ID);
                                                                 s.Modifier_infos_activite(act);
                                                                 s.sauvegarder();

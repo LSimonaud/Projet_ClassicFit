@@ -74,24 +74,7 @@ public class Salle {
 
     }
 
-    /*
-    public String mdp_oublie(String email) {
-        if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-            return "Adresse mail invalide";
-        }
-
-        if (admin.getemail().equalsIgnoreCase(email)) {
-            return admin.getmdp();
-        } else {
-            for (Client cl : listeClient) {
-                if (cl.getemail().equalsIgnoreCase(email)) {
-                    return cl.getmdp();
-                }
-            }
-        }
-        return "Email incorrect";
-    }
-     */
+ 
     public void Modifier_addresseMail(Client cl) {
         System.out.println("Entrer une nouvelle addresse mail :");
         String new_email = sc.nextLine();

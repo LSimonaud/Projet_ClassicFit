@@ -136,7 +136,7 @@ public class Salle {
         if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
-        LocalDate date_naissance = verifierDateNaissance(date,format);
+        LocalDate date_naissance = verifierDateNaissance(date, format);
 
         System.out.println("Numero de telephone :");
         String numero_tel = sc.nextLine();
@@ -208,7 +208,7 @@ public class Salle {
         }
         return date;
     }
-    
+
     public static LocalDate verifierDateCours(String dateStr, DateTimeFormatter format) {
         //Vérification date correcte
         LocalDate date;
@@ -262,7 +262,7 @@ public class Salle {
                 if (new_date == null || new_date.trim().isEmpty() || !new_date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
                     throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
                 }
-                LocalDate new_date_naissance = verifierDateNaissance(new_date,format);
+                LocalDate new_date_naissance = verifierDateNaissance(new_date, format);
                 System.out.println(cl.modifier_date_naissance(new_date_naissance));
                 break;
             }
@@ -456,7 +456,7 @@ public class Salle {
         if (date == null || date.trim().isEmpty() || !date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             throw new IllegalArgumentException("Format de date invalide (dd-MM-yyyy attendu)");
         }
-        LocalDate date_co = verifierDateCours(date,format);
+        LocalDate date_co = verifierDateCours(date, format);
         System.out.println("Entrer la duree du cours en minutes:");
         int duree_co = sc.nextInt();
         sc.nextLine();
@@ -778,7 +778,11 @@ public class Salle {
         for (Cours co : listeCours) {
             for (Client cl : listeClient) {
                 if (cl.getlistePasse_client().contains(co) || cl.getlisteFutur_client().contains(co)) {
-                    co.ajouter_inscription(cl);
+                    try {
+                        co.ajouter_inscription(cl);
+                    } catch (DejaInscritException e) {
+                        e.getMessage();
+                    }
                 }
             }
         }

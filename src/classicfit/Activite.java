@@ -33,7 +33,24 @@ public class Activite {
     }
     
     public String affichage_liste(){
-        return String.valueOf(ID)+" "+nom+" Description : "+description;
+        return "ID : "+String.valueOf(ID)+" | "+nom+" | Description : "+description;
     }
-
+    
+    public int getID_activite(){
+        return this.ID;
+    }
+    
+    public String getNom_activite(){
+        return this.nom;
+    }
+    
+    public String modifier_nom(String nom){
+        this.nom = nom;
+        return "Nom : " + this.nom;
+    }
+    
+    public String modifier_description(String description){
+        this.description = description;
+        return "Description :"+this.description;
+    }
 }

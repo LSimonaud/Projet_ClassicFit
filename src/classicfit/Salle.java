@@ -328,8 +328,19 @@ public class Salle {
     }
 
     public void Desincription_client(Client cl, Cours co) {
-        co.retirer_inscription(cl);
-        cl.retirerCours_listeFutur(co);
+        if (cl.getlisteFutur_client().contains(co)) {
+            System.out.println("Etes-vous certain de vouloir vous desinscrire ?");
+            String rep = sc.nextLine();
+            if (rep.toLowerCase().equalsIgnoreCase("oui")) {
+                co.retirer_inscription(cl);
+                cl.retirerCours_listeFutur(co);
+                System.out.println("Vous avez bien ete desinscrit du cours " + co.getNom_cours());
+            } else {
+                System.out.println("Desinscription annule");
+            }
+        } else {
+            System.out.println("Vous n'etes pas inscrit a ce cours");
+        }
     }
 
     public void Consulter_listeCours_futur(Client cl) {
@@ -472,7 +483,7 @@ public class Salle {
 
     public String Supprimer_cours(Cours co) {
         if (co.getListeInscrit_cours().isEmpty()) {
-            System.out.println("Etes-vous certain de vouloir supprimer le cours " + co.getNom_cours() + " ?");
+            System.out.println("Etes-vous certain de vouloir supprimer le cours " + co.getNom_cours() + " ? (oui/non)");
             String rep = sc.nextLine();
             if (rep.toLowerCase().equalsIgnoreCase("oui")) {
                 listeCours.remove(co);
@@ -604,19 +615,39 @@ public class Salle {
         }
     }
 
-    public void Consulter_coursPopulaire() {
+    public String Consulter_coursPopulaire() {
+        LinkedList<Cours> listeCoursPopulaire = new LinkedList<>();
         for (Cours co : listeCours) {
             if ((co.getListeInscrit_cours().size() / co.getNbrePlace_cours()) >= 0.8) {
+                listeCoursPopulaire.add(co);
+            }
+        }
+        if (listeCoursPopulaire.isEmpty()) {
+            System.out.println("Il n'y a aucun cours populaire");
+            return "vide";
+        } else {
+            for (Cours co : listeCoursPopulaire) {
                 System.out.println(co.affichage_listeAdmin());
             }
+            return "pleine";
         }
     }
 
-    public void Consulter_coursImpopulaire() {
+    public String Consulter_coursImpopulaire() {
+        LinkedList<Cours> listeCoursImpopulaire = new LinkedList<>();
         for (Cours co : listeCours) {
             if ((co.getListeInscrit_cours().size() / co.getNbrePlace_cours()) <= 0.2) {
+                listeCoursImpopulaire.add(co);
+            }
+        }
+        if (listeCoursImpopulaire.isEmpty()) {
+            System.out.println("Il n'y a aucun cours impopulaire");
+            return "vide";
+        } else {
+            for (Cours co : listeCoursImpopulaire) {
                 System.out.println(co.affichage_listeAdmin());
             }
+            return "pleine";
         }
     }
 
@@ -628,7 +659,7 @@ public class Salle {
         }
         System.out.println("Entrer la description de l'activite :");
         String description = sc.nextLine();
-        if (description == null || description.trim().isEmpty() || description.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9 ,.!?;:'\"()\\-]+$")) {
+        if (description == null || description.trim().isEmpty() || !description.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9 ,.!?;:'\"()\\-]+$")) {
             throw new IllegalArgumentException("Description invalide");
         }
 
@@ -638,7 +669,76 @@ public class Salle {
         listeActivite.add(a);
     }
 
+    public String Supprimer_activite(Activite a) {
+        System.out.println("Etes-vous certain de vouloir supprimer l'activite " + a.getNom_activite() + " ? (oui/non)");
+        String rep = sc.nextLine();
+        if (rep.toLowerCase().equalsIgnoreCase("oui")) {
+            listeActivite.remove(a);
+            return "L'activite " + a.getNom_activite() + " a bien ete supprime";
+        } else {
+            return "Operation annulee";
+        }
+    }
+
+    public Activite Rechercher_activite_ID(int ID) throws UserNotFoundException {
+        if (ID <= 0) {
+            throw new IllegalArgumentException("ID invalide");
+        }
+        for (Activite a : listeActivite) {
+            if (a.getID_activite() == ID) {
+                return a;
+            }
+        }
+        throw new UserNotFoundException("Activite avec ID " + ID + " introuvable.");
+    }
+
+    public LinkedList<Activite> Rechercher_nom_activite(String nom) throws UserNotFoundException {
+        if (nom == null || nom.trim().isEmpty() || !nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ0-9]+)*$")) {
+            throw new IllegalArgumentException("Nom invalide");
+        }
+        LinkedList<Activite> liste = new LinkedList<>();
+        for (Activite a : listeActivite) {
+            if (a.getNom_activite().equalsIgnoreCase(nom)) {
+                liste.add(a);
+            }
+        }
+        if (liste == null) {
+            throw new UserNotFoundException("Nom de l'activite " + nom + " introuvable.");
+        }
+        return liste;
+    }
+
+    public void Modifier_infos_activite(Activite a) throws IllegalArgumentException {
+        System.out.println("Que souhaitez-vous modifier : 1-Nom 2-Description");
+        int choix = sc.nextInt();
+        sc.nextLine();
+        if (choix != 1 && choix != 2) {
+            throw new IllegalArgumentException("Reponse invalide");
+        }
+        switch (choix) {
+            case 1 -> {
+                System.out.println("Entrer un nouveau Nom :");
+                String new_nom = sc.nextLine();
+                if (new_nom == null || new_nom.trim().isEmpty() || !new_nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ0-9]+)*$")) {
+                    throw new IllegalArgumentException("Nom invalide");
+                }
+                System.out.println(a.modifier_nom(new_nom));
+                break;
+            }
+            case 2 -> {
+                System.out.println("Entrer une nouvelle Description :");
+                String new_description = sc.nextLine();
+                if (new_description == null || new_description.trim().isEmpty() || !new_description.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9 ,.!?;:'\"()\\-]+$")) {
+                    throw new IllegalArgumentException("Description invalide");
+                }
+                System.out.println(a.modifier_description(new_description));
+                break;
+            }
+        }
+    }
+
     public void Consulter_listeActivite() {
+        System.out.println("Liste des activites :");
         for (Activite a : listeActivite) {
             System.out.println(a.affichage_liste());
         }
@@ -670,6 +770,10 @@ public class Salle {
     }
 
     public void charger() throws FileNotFoundException, IOException, DejaInscritException {
+        listeClient.clear();
+        listeCours.clear();
+        listeActivite.clear();
+
         boolean fichierTrouve1 = false;
         while (fichierTrouve1 == false) {
             try {

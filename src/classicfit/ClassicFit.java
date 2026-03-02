@@ -40,7 +40,6 @@ public class ClassicFit {
                     try {
                         cl = s.Creer_compte();
                         s.sauvegarder();
-                        s.charger();
                         valide = true;
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
@@ -142,7 +141,6 @@ public class ClassicFit {
                                                                 if (choix.equalsIgnoreCase("oui")) {
                                                                     s.Modifier_etatAbonnement(ID);
                                                                     s.sauvegarder();
-                                                                    s.charger();
                                                                 }
                                                                 d = true;
                                                             } catch (UserNotFoundException e) {
@@ -188,7 +186,6 @@ public class ClassicFit {
                                                             try {
                                                                 s.Ajouter_cours();
                                                                 s.sauvegarder();
-                                                                s.charger();
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
                                                                 System.out.println(e.getMessage());
@@ -201,16 +198,15 @@ public class ClassicFit {
                                                         break;
                                                     }
                                                     case "3" -> {
-                                                        System.out.println("Entrer l'ID du cours a supprimer :");
-                                                        int ID = sc.nextInt();
-                                                        sc.nextLine();
                                                         Boolean v = false;
                                                         while (v == false) {
                                                             try {
+                                                                System.out.println("Entrer l'ID du cours a supprimer :");
+                                                                int ID = sc.nextInt();
+                                                                sc.nextLine();
                                                                 Cours co = s.Rechercher_cours_ID(ID);
                                                                 System.out.println(s.Supprimer_cours(co));
                                                                 s.sauvegarder();
-                                                                s.charger();
                                                                 v = true;
                                                             } catch (UserNotFoundException e) {
                                                                 System.out.println(e.getMessage());
@@ -224,11 +220,11 @@ public class ClassicFit {
                                                     }
                                                     case "4" -> {
                                                         System.out.println("Par quel moyen veux-tu filtrer ta recherche ? (ID,nom,date)");
-                                                        String filtre = sc.nextLine();
+                                                        String filtre = sc.nextLine().toLowerCase();
                                                         boolean c = false;
                                                         while (c == false) {
                                                             try {
-                                                                if (filtre.equalsIgnoreCase("ID")) {
+                                                                if (filtre.equalsIgnoreCase("id")) {
                                                                     System.out.println("Pour quel ID ?");
                                                                     int ID = sc.nextInt();
                                                                     sc.nextLine();
@@ -270,7 +266,6 @@ public class ClassicFit {
                                                                 Cours co = s.Rechercher_cours_ID(ID);
                                                                 s.Modifier_infos_cours(co);
                                                                 s.sauvegarder();
-                                                                s.charger();
                                                                 v = true;
                                                             } catch (IllegalArgumentException f) {
                                                                 System.out.println(f.getMessage());
@@ -286,13 +281,14 @@ public class ClassicFit {
                                                         Boolean v = false;
                                                         while (v == false) {
                                                             try {
-                                                                s.Consulter_coursPopulaire();
-                                                                System.out.println("Voulez-vous ajouter un cours populaire ?");
-                                                                String ajout = sc.nextLine();
-                                                                if (ajout.toLowerCase().equalsIgnoreCase("oui")) {
-                                                                    s.Ajouter_cours();
-                                                                    s.sauvegarder();
-                                                                    s.charger();
+                                                                String c = s.Consulter_coursPopulaire();
+                                                                if (c.equalsIgnoreCase("pleine")) {
+                                                                    System.out.println("Voulez-vous ajouter un cours populaire ?");
+                                                                    String ajout = sc.nextLine();
+                                                                    if (ajout.toLowerCase().equalsIgnoreCase("oui")) {
+                                                                        s.Ajouter_cours();
+                                                                        s.sauvegarder();
+                                                                    }
                                                                 }
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
@@ -306,17 +302,18 @@ public class ClassicFit {
                                                         Boolean v = false;
                                                         while (v == false) {
                                                             try {
-                                                                s.Consulter_coursImpopulaire();
-                                                                System.out.println("Voulez-vous supprimer un cours impopulaire ?");
-                                                                String sup = sc.nextLine();
-                                                                if (sup.toLowerCase().equalsIgnoreCase("oui")) {
-                                                                    System.out.println("Entrer l'ID du cours à supprimer :");
-                                                                    int ID = sc.nextInt();
-                                                                    sc.nextLine();
-                                                                    Cours co = s.Rechercher_cours_ID(ID);
-                                                                    System.out.println(s.Supprimer_cours(co));
-                                                                    s.sauvegarder();
-                                                                    s.charger();
+                                                                String c = s.Consulter_coursImpopulaire();
+                                                                if (c.equalsIgnoreCase("pleine")) {
+                                                                    System.out.println("Voulez-vous supprimer un cours impopulaire ?");
+                                                                    String sup = sc.nextLine();
+                                                                    if (sup.toLowerCase().equalsIgnoreCase("oui")) {
+                                                                        System.out.println("Entrer l'ID du cours à supprimer :");
+                                                                        int ID = sc.nextInt();
+                                                                        sc.nextLine();
+                                                                        Cours co = s.Rechercher_cours_ID(ID);
+                                                                        System.out.println(s.Supprimer_cours(co));
+                                                                        s.sauvegarder();
+                                                                    }
                                                                 }
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
@@ -342,22 +339,106 @@ public class ClassicFit {
                                             while (retour == false) {
                                                 System.out.println("Selectionner une action :");
                                                 System.out.println("""
-                                                                   1-Ajouter une activite""");
+                                                                   1-Consulter la liste des activites
+                                                                   2-Ajouter une activite
+                                                                   3-Supprimer une activite
+                                                                   4-Rechercher une activite
+                                                                   5-Modifier une activite
+                                                                   6-Retour""");
                                                 choix = sc.nextLine();
                                                 switch (choix) {
                                                     case "1" -> {
+                                                        s.Consulter_listeActivite();
+                                                        break;
+                                                    }
+                                                    case "2" -> {
                                                         Boolean v = false;
                                                         while (v == false) {
                                                             try {
                                                                 s.Ajouter_activite();
                                                                 s.sauvegarder();
-                                                                s.charger();
                                                                 v = true;
                                                             } catch (IllegalArgumentException e) {
                                                                 System.out.println(e.getMessage());
                                                                 System.out.println("Veuillez reessayer");
                                                             }
                                                         }
+                                                        break;
+                                                    }
+                                                    case "3" -> {
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                System.out.println("Entrer l'ID de l'activite a supprimer :");
+                                                                int ID = sc.nextInt();
+                                                                sc.nextLine();
+                                                                Activite act = s.Rechercher_activite_ID(ID);
+                                                                System.out.println(s.Supprimer_activite(act));
+                                                                s.sauvegarder();
+                                                                v = true;
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reesayer");
+                                                            } catch (IllegalArgumentException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reesayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "4" -> {
+                                                        System.out.println("Par quel moyen veux-tu filtrer ta recherche ? (ID,nom)");
+                                                        String filtre = sc.nextLine().toLowerCase();
+                                                        boolean c = false;
+                                                        while (c == false) {
+                                                            try {
+                                                                if (filtre.equalsIgnoreCase("id")) {
+                                                                    System.out.println("Pour quel ID ?");
+                                                                    int ID = sc.nextInt();
+                                                                    sc.nextLine();
+                                                                    System.out.println(s.Rechercher_activite_ID(ID).affichage_liste());
+                                                                }
+                                                                if (filtre.equalsIgnoreCase("nom")) {
+                                                                    System.out.println("Pour quel nom ?");
+                                                                    String nom = sc.nextLine();
+                                                                    for (Activite act : s.Rechercher_nom_activite(nom)) {
+                                                                        System.out.println(act.affichage_liste());
+                                                                    }
+                                                                }
+                                                                c = true;
+                                                            } catch (IllegalArgumentException f) {
+                                                                System.out.println(f.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "5" -> {
+                                                        System.out.println("Entrer l'ID de l'activite a modifier :");
+                                                        int ID = sc.nextInt();
+                                                        sc.nextLine();
+                                                        Boolean v = false;
+                                                        while (v == false) {
+                                                            try {
+                                                                Activite act = s.Rechercher_activite_ID(ID);
+                                                                s.Modifier_infos_activite(act);
+                                                                s.sauvegarder();
+                                                                v = true;
+                                                            } catch (IllegalArgumentException f) {
+                                                                System.out.println(f.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            } catch (UserNotFoundException e) {
+                                                                System.out.println(e.getMessage());
+                                                                System.out.println("Veuillez reessayer");
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    case "6" -> {
+                                                        retour = true;
                                                         break;
                                                     }
                                                 }
@@ -380,7 +461,7 @@ public class ClassicFit {
                                 client = true;
                                 break;
                             }
-                            
+
                             case "client interdit" -> {
                                 System.out.println("""
                                                    Vous n'etes pas autorise a vous connecter.
@@ -432,7 +513,6 @@ public class ClassicFit {
                                         try {
                                             s.Modifier_addresseMail(cl);
                                             s.sauvegarder();
-                                            s.charger();
                                             v = true;
                                         } catch (IllegalArgumentException e) {
                                             System.out.println(e.getMessage());
@@ -449,7 +529,6 @@ public class ClassicFit {
                                             String mdp = sc.nextLine();
                                             s.Modifier_mdp(mdp);
                                             s.sauvegarder();
-                                            s.charger();
                                             v = true;
                                         } catch (IllegalArgumentException e) {
                                             System.out.println(e.getMessage());
@@ -468,7 +547,6 @@ public class ClassicFit {
                                         try {
                                             s.Modifier_infos_client(cl);
                                             s.sauvegarder();
-                                            s.charger();
                                             v = true;
                                         } catch (IllegalArgumentException e) {
                                             System.out.println(e.getMessage());
@@ -513,16 +591,12 @@ public class ClassicFit {
                                             Cours CO = s.Rechercher_cours_ID(ID);
                                             s.Inscription_client(cl, CO);
                                             s.sauvegarder();
-                                            s.charger();
                                             v = true;
                                         } catch (UserNotFoundException e) {
                                             System.out.println(e.getMessage());
                                             System.out.println("Veuillez reessayer");
                                         } catch (IllegalArgumentException f) {
                                             System.out.println(f.getMessage());
-                                            System.out.println("Veuillez reessayer");
-                                        } catch (DejaInscritException e){
-                                            System.out.println(e.getMessage());
                                             System.out.println("Veuillez reessayer");
                                         }
                                     }
@@ -537,19 +611,9 @@ public class ClassicFit {
                                             int ID = sc.nextInt();
                                             sc.nextLine();
                                             Cours co = s.Rechercher_cours_ID(ID);
-                                            System.out.println("Etes-vous certain de vouloir vous desinscrire ?");
-                                            String rep = sc.nextLine();
-                                            if (rep.toLowerCase().equalsIgnoreCase("oui")) {
-                                                s.Desincription_client(cl, co);
-                                                s.sauvegarder();
-                                                s.charger();
-                                                System.out.println("Vous avez bien ete desinscrit du cours "+co.getNom_cours());
-                                                v = true;
-                                            }else{
-                                                System.out.println("Desinscription annule");
-                                                v=true;
-                                            }
-                                           
+                                            s.Desincription_client(cl, co);
+                                            s.sauvegarder();
+                                            v = true;
                                         } catch (UserNotFoundException e) {
                                             System.out.println(e.getMessage());
                                             System.out.println("Veuillez reessayer");

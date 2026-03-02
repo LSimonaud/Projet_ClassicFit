@@ -1,12 +1,7 @@
-1;Volley;Sport d’équipe où l’on échange un ballon au-dessus d’un filet sans le laisser tomber
-2;Foot;Jeu collectif visant à marquer des buts avec un ballon au pied
-3;Tennis;Sport de raquette où l’on renvoie une balle dans le camp adverse
-4;Basket;Sport rapide où l’on marque en lançant un ballon dans un panier en hauteur
+1;Volley;Sport d equipe ou on echange un ballon au-dessus d’un filet sans le laisser tomber
+2;Foot;Jeu collectif visant a marquer des buts avec un ballon au pied
+3;Tennis;Sport de raquette ou on renvoie une balle dans le camp adverse
+4;Basket;Sport rapide ou on marque en lancant un ballon dans un panier en hauteur
 5;Rugby;Sport de contact utilisant un ballon ovale pour marquer des essais
-6;Handball;Jeu dynamique où l’on marque en lançant un ballon à la main dans le but adver
-1;Volley;Sport d’équipe où l’on échange un ballon au-dessus d’un filet sans le laisser tomber
-2;Foot;Jeu collectif visant à marquer des buts avec un ballon au pied
-3;Tennis;Sport de raquette où l’on renvoie une balle dans le camp adverse
-4;Basket;Sport rapide où l’on marque en lançant un ballon dans un panier en hauteur
-5;Rugby;Sport de contact utilisant un ballon ovale pour marquer des essais
-6;Handball;Jeu dynamique où l’on marque en lançant un ballon à la main dans le but adv
+6;Handball;Jeu dynamique ou on marque en lancant un ballon a la main dans le but adverse
+7;Biathlon;Sport melange

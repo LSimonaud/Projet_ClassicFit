@@ -142,6 +142,10 @@ public class ClassicFit {
                                                                     s.Modifier_etatAbonnement(ID);
                                                                     s.sauvegarder();
                                                                 }
+                                                                if (choix.equalsIgnoreCase("Oui")) {
+                                                                    s.Modifier_etatAbonnement(ID);
+                                                                    s.sauvegarder();
+                                                                }
                                                                 d = true;
                                                             } catch (UserNotFoundException e) {
                                                                 System.out.println(e.getMessage());
@@ -500,7 +504,7 @@ public class ClassicFit {
                         while (retour == false) {
                             System.out.println("Selectionner une action :");
                             System.out.println("""
-                                       1-Modifier mon addresse email
+                                       1-Modifier mon adresse email
                                        2-Modifier mon mot de passe
                                        3-Consulter mes informations
                                        4-Modifier mes informations

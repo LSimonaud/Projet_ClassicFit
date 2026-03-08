@@ -1,5 +1,9 @@
 /*
- 
+ Luc SIMONAUD
+Philippe-Henri PAUL
+Aloïs OVIGNEUR
+Projet Salle de Sport
+AA
  */
 package classicfit;
 
